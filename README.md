@@ -70,4 +70,4 @@ Any sort of help is appreciated :heart:
 - Fuzzy searching content in the current heading
 
 # GIFs
-![telescope-showcase](https://user-images.githubusercontent.com/76052559/127359276-b3dd99e1-7d7c-4d63-b092-30d2e89305b9.mp4)
+![telescope-showcase](https://user-images.githubusercontent.com/76052559/127364253-7570a584-e80b-4365-9a9f-a3df8984472d.gif)
