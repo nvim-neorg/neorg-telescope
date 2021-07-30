@@ -53,7 +53,7 @@ return function(opts)
                 local entry = actions.get_selected_entry()
 				actions.close(prompt_bufnr)
                 vim.api.nvim_put({ "[" .. entry.ordinal:gsub(":$", "") .. "]" .. "(" .. entry.display:gsub("^(%W+)%s+", "%1") .. ")" }, "c", false, true)
-                vim.api.nvim_feedkeys("ea", "t", false)
+                vim.api.nvim_feedkeys("f)a", "t", false)
             end)
             return true
         end,
