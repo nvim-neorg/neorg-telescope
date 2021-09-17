@@ -1,10 +1,10 @@
-local actions = require('telescope.actions')
-local actions_set = require('telescope.actions.set')
-local finders = require('telescope.finders')
-local pickers = require('telescope.pickers')
-local conf = require('telescope.config').values
+local actions = require("telescope.actions")
+local actions_set = require("telescope.actions.set")
+local finders = require("telescope.finders")
+local pickers = require("telescope.pickers")
+local conf = require("telescope.config").values
 
-local neorg_loaded, _ = pcall(require, 'neorg.modules')
+local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
@@ -29,33 +29,46 @@ local function get_linkables()
 end
 
 return function(opts)
-    opts = opts or {}
+	opts = opts or {}
 
 	pickers.new(opts, {
 		prompt_title = "Insert Link",
-        results_title = "Linkables",
-        finder = finders.new_table({
-            results = get_linkables(),
-            entry_maker = function(entry)
-                return {
-                    value = entry.line,
-                    display = entry.display,
-                    ordinal = entry.linkable,
-                    lnum = entry.line,
-                }
-            end,
-        }),
-        -- I couldn't get syntax highlight to work with this :(
-        previewer = nil,
-        sorter = conf.generic_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-            actions_set.select:replace(function()
-                local entry = actions.get_selected_entry()
+		results_title = "Linkables",
+		finder = finders.new_table({
+			results = get_linkables(),
+			entry_maker = function(entry)
+				return {
+					value = entry.line,
+					display = entry.display,
+					ordinal = entry.linkable,
+					lnum = entry.line,
+				}
+			end,
+		}),
+		-- I couldn't get syntax highlight to work with this :(
+		previewer = nil,
+		sorter = conf.generic_sorter(opts),
+		attach_mappings = function(prompt_bufnr)
+			actions_set.select:replace(function()
+				local entry = actions.get_selected_entry()
 				actions.close(prompt_bufnr)
-                vim.api.nvim_put({ "[" .. entry.ordinal:gsub(":$", "") .. "]" .. "(" .. entry.display:gsub("^(%W+)%s+.+", "%1") .. entry.ordinal:gsub("[%*#%|_]", "\\%1") .. ")" }, "c", false, true)
-                vim.api.nvim_feedkeys("f)a", "t", false)
-            end)
-            return true
-        end,
+				vim.api.nvim_put(
+					{
+						"["
+							.. entry.ordinal:gsub(":$", "")
+							.. "]"
+							.. "("
+							.. entry.display:gsub("^(%W+)%s+.+", "%1")
+							.. entry.ordinal:gsub("[%*#%|_]", "\\%1")
+							.. ")",
+					},
+					"c",
+					false,
+					true
+				)
+				vim.api.nvim_feedkeys("f)a", "t", false)
+			end)
+			return true
+		end,
 	}):find()
 end
