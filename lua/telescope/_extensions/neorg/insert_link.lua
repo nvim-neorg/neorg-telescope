@@ -41,6 +41,7 @@ local function get_linkables(bufnr, file)
 
     if file then
         file = file:gsub(current_workspace[2], "")
+        file = file:gsub(".norg", "")
     end
 
     local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
