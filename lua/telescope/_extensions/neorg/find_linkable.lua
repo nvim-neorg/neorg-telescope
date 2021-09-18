@@ -1,4 +1,4 @@
-local neorg_loaded, _ = pcall(require, 'neorg.modules')
+local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
@@ -15,15 +15,18 @@ local function get_current_workspace()
 end
 
 return function(opts)
-    opts = opts or {}
+	opts = opts or {}
 
 	local current_workspace = get_current_workspace()
 
-	if current_workspace then
-		require('telescope.builtin').grep_string({
-			search = "^\\s*(\\*+|\\|{1,2})\\s+",
-			use_regex = true,
-			search_dirs = { current_workspace }
-		})
+	if not current_workspace then
+		return
 	end
+
+	require("telescope.builtin").grep_string({
+		search = "^\\s*(\\*+|\\|{1,2})\\s+",
+		use_regex = true,
+		search_dirs = { current_workspace },
+		prompt_title = "Find in Norg files",
+	})
 end
