@@ -8,7 +8,7 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
---- Get a list of all norg files in current workspace
+--- Get a list of all norg files in current workspace. Returns { workspace_path, norg_files }
 --- @return table
 local function get_norg_files()
     local dirman = neorg.modules.get_module("core.norg.dirman")
@@ -20,8 +20,8 @@ local function get_norg_files()
     local current_workspace = dirman.get_current_workspace()
 
     local norg_files = dirman.get_norg_files(current_workspace[1])
-    norg_files = vim.tbl_map(function (f) return  current_workspace[2] .. "/" .. f end, norg_files)
-    return norg_files
+
+    return { current_workspace[2], norg_files }
 end
 
 --- Creates links for a `file` specified by `bufnr`
@@ -31,16 +31,7 @@ end
 local function get_linkables(bufnr, file)
     local ret = {}
 
-    local dirman = neorg.modules.get_module("core.norg.dirman")
-
-    if not dirman then
-        return nil
-    end
-
-    local current_workspace = dirman.get_current_workspace()
-
     if file then
-        file = file:gsub(current_workspace[2], "")
         file = file:gsub(".norg", "")
     end
 
@@ -73,17 +64,18 @@ local function generate_links()
 
     local files = get_norg_files()
 
-    if not files then
+    if not files[2] then
         return
     end
 
-    for _, file in pairs(files) do
-        local bufnr = dirman.get_file_bufnr(file)
+    for _, file in pairs(files[2]) do
+        local full_path_file = files[1] .. "/" .. file
+        local bufnr = dirman.get_file_bufnr(full_path_file)
         if not bufnr then
             return
         end
 
-        vim.fn.bufload(file)
+        vim.fn.bufload(full_path_file)
 
         -- Because we do not want file name to appear in a link to the same file
         local file_inserted = (function ()
