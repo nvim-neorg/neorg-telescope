@@ -89,7 +89,7 @@ local function generate_links()
         local links = get_linkables(bufnr, file_inserted)
 
         if vim.api.nvim_get_current_buf() ~= bufnr then
-            vim.cmd('bunload ' .. bufnr)
+            vim.cmd('bunload! ' .. bufnr)
         end
 
         vim.list_extend(res, links)
