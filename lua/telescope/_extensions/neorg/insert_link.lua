@@ -1,5 +1,6 @@
 local actions = require("telescope.actions")
 local actions_set = require("telescope.actions.set")
+local state = require('telescope.actions.state')
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
@@ -121,7 +122,7 @@ return function(opts)
         sorter = conf.generic_sorter(opts),
         attach_mappings = function(prompt_bufnr)
             actions_set.select:replace(function()
-                local entry = actions.get_selected_entry()
+                local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
 
                 local inserted_file = (function ()
