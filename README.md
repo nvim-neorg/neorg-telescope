@@ -1,6 +1,6 @@
 # Neorg Integration with [Telescope](https://github.com/nvim-telescope/telescope.nvim)
 
-This repo hosts a 3rd party module for [Neorg](https://github.com/vhyrro/neorg) to integrate with telescope's juicy features.
+This repo hosts a 3rd party module for [Neorg](https://github.com/nvim-neorg/neorg) to integrate with telescope's juicy features.
 
 # Features
 ### Fuzzy Searching Any Linkable
@@ -18,7 +18,7 @@ to load it first:
 ### With [Packer.nvim](github.com/wbthomason/packer.nvim):
 ```lua
 use {
-    "vhyrro/neorg",
+    "nvim-neorg/neorg",
     config = function()
         require('neorg').setup {
 
@@ -40,22 +40,23 @@ in normal mode and `<C-l>` (insert link) in insert mode. If you're not using the
 Neorg use those keys:
 
 ```lua
-local neorg_callbacks = require('neorg.callbacks')
+local neorg_callbacks = require("neorg.callbacks")
 
 neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-    ...
-
     -- Map all the below keybinds only when the "norg" mode is active
     keybinds.map_event_to_mode("norg", {
         n = { -- Bind keys in normal mode
-            { "<C-s>", "core.integrations.telescope.find_linkable" }
+            { "<C-s>", "core.integrations.telescope.find_linkable" },
         },
 
         i = { -- Bind in insert mode
-            { "<C-l>", "core.integrations.telescope.insert_link" }
-        }
-    }, { silent = true, noremap = true })
-}
+            { "<C-l>", "core.integrations.telescope.insert_link" },
+        },
+    }, {
+        silent = true,
+        noremap = true,
+    })
+end)
 ```
 
 # Support Welcome
