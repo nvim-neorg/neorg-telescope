@@ -31,7 +31,7 @@ use {
 
         }
     end,
-    requires = "vhyrro/neorg-telescope" -- Be sure to pull in the repo
+    requires = "nvim-neorg/neorg-telescope" -- Be sure to pull in the repo
 }
 ```
 
