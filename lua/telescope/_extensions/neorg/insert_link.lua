@@ -135,14 +135,14 @@ return function(opts)
 
                 vim.api.nvim_put(
                     {
-                        "["
-                            .. entry.ordinal:gsub(":$", "")
-                            .. "]"
-                            .. "("
+                        "{"
                             .. inserted_file
                             .. entry.display:gsub("^(%W+)%s+.+", "%1")
                             .. entry.ordinal:gsub("[%*#%|_]", "\\%1")
-                            .. ")",
+                            .. "}"
+                            .. "["
+                            .. entry.ordinal:gsub(":$", "")
+                            .. "]",
                     },
                     "c",
                     false,
