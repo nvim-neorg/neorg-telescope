@@ -137,7 +137,7 @@ return function(opts)
                     {
                         "{"
                             .. inserted_file
-                            .. entry.display:gsub("^(%W+)%s+.+", "%1")
+                            .. entry.display:gsub("^(%W+)%s+.+", "%1 ")
                             .. entry.ordinal:gsub("[%*#%|_]", "\\%1")
                             .. "}"
                             .. "["
@@ -148,7 +148,7 @@ return function(opts)
                     false,
                     true
                 )
-                vim.api.nvim_feedkeys("f)a", "t", false)
+                vim.api.nvim_feedkeys("hf]a", "t", false)
             end)
             return true
         end,
