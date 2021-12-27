@@ -32,11 +32,14 @@ end
 local function get_linkables(bufnr, file)
     local ret = {}
 
+    local lines
     if file then
+        lines = vim.fn.readfile(file)
         file = file:gsub(".norg", "")
+    else
+        lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
     end
 
-    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
 
     for i, line in ipairs(lines) do
         local heading = { line:match("^%s*(%*+%s+(.+))$") }
@@ -76,8 +79,6 @@ local function generate_links()
             return
         end
 
-        vim.fn.bufload(full_path_file)
-
         -- Because we do not want file name to appear in a link to the same file
         local file_inserted = (function ()
             if vim.api.nvim_get_current_buf() == bufnr then
@@ -88,10 +89,6 @@ local function generate_links()
         end)()
 
         local links = get_linkables(bufnr, file_inserted)
-
-        if vim.api.nvim_get_current_buf() ~= bufnr then
-            vim.cmd('bunload! ' .. bufnr)
-        end
 
         vim.list_extend(res, links)
     end
@@ -135,20 +132,20 @@ return function(opts)
 
                 vim.api.nvim_put(
                     {
-                        "["
-                            .. entry.ordinal:gsub(":$", "")
-                            .. "]"
-                            .. "("
+                        "{"
                             .. inserted_file
-                            .. entry.display:gsub("^(%W+)%s+.+", "%1")
+                            .. entry.display:gsub("^(%W+)%s+.+", "%1 ")
                             .. entry.ordinal:gsub("[%*#%|_]", "\\%1")
-                            .. ")",
+                            .. "}"
+                            .. "["
+                            .. entry.ordinal:gsub(":$", "")
+                            .. "]",
                     },
                     "c",
                     false,
                     true
                 )
-                vim.api.nvim_feedkeys("f)a", "t", false)
+                vim.api.nvim_feedkeys("hf]a", "t", false)
             end)
             return true
         end,
