@@ -6,11 +6,18 @@ This repo hosts a 3rd party module for [Neorg](https://github.com/nvim-neorg/neo
 ### Fuzzy Searching Any Linkable
 Simply jump to any important element in the workspace. This includes headings, drawers, markers.
 
+![Screenshot 2021-12-30 at 18 13 49](https://user-images.githubusercontent.com/81827001/147773581-86ccf936-f7c4-4743-800e-e64b00321b4e.png)
+
+
 ### Automatic Link Insertion
 Simply press a key (`<C-l>` in insert mode by default) and select what you want to link to.
 
+![Screenshot 2021-12-30 at 18 12 17](https://user-images.githubusercontent.com/81827001/147773490-c966becb-69a4-4ceb-9dcc-eca2440a4521.png)
+
 ### Search Headings
 Search through all the headings in your documents easily.
+
+![Screenshot 2021-12-30 at 18 11 44](https://user-images.githubusercontent.com/81827001/147773447-26a80925-0dc3-481c-a615-d48a468d19a1.png)
 
 
 # Installation
