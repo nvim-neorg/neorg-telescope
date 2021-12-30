@@ -9,7 +9,9 @@ Simply jump to any important element in the workspace. This includes headings, d
 ### Automatic Link Insertion
 Simply press a key (`<C-l>` in insert mode by default) and select what you want to link to.
 
-`insert_link` only works for elements in the current document.
+### Search Headings
+Search through all the headings in your documents easily.
+
 
 # Installation
 First, make sure to pull this plugin down. This plugin does not run any code in of itself. It requires Neorg
@@ -66,9 +68,5 @@ If you have any awesome ideas or any code you want to contribute then go ahead!
 Any sort of help is appreciated :heart:
 
 #### Some Ideas Right Off The Top Of My Head
-- Inserting a link to any linkable element in the whole workspace rather than just in the current document
 - Fuzzy searching content in paragraphs only
 - Fuzzy searching content in the current heading
-
-# GIFs
-![telescope-showcase](https://user-images.githubusercontent.com/76052559/127364253-7570a584-e80b-4365-9a9f-a3df8984472d.gif)
