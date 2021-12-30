@@ -67,6 +67,15 @@ neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, key
     })
 end)
 ```
+# Additional GIFs
+
+### Insert Links
+
+https://user-images.githubusercontent.com/81827001/147786495-a0eb0a96-817f-433a-b0cf-1861dfd90c65.mov
+
+### Search Headings
+
+https://user-images.githubusercontent.com/81827001/147786647-e29f8331-60c1-4dda-aee6-9ff9119be329.mov
 
 # Support Welcome
 If it's not clear by the code already, I'm a solid noob at telescope related things :)
@@ -77,3 +86,5 @@ Any sort of help is appreciated :heart:
 #### Some Ideas Right Off The Top Of My Head
 - Fuzzy searching content in paragraphs only
 - Fuzzy searching content in the current heading
+
+\- vhyrro
