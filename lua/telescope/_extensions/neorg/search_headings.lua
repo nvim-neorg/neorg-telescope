@@ -18,8 +18,8 @@ local bufnr = vim.api.nvim_get_current_buf()
 local filename = vim.fn.expand(vim.api.nvim_buf_get_name(bufnr))
 local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
 
-return function()
-  local opts = themes.get_dropdown({
+return function(options)
+  local opts = options or themes.get_dropdown({
     border = true,
     previewer = false,
     shorten_path = false,
