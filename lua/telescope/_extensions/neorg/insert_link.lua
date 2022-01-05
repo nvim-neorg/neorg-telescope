@@ -111,8 +111,8 @@ return function(opts)
         local displayer = entry_display.create {
           separator = ": ",
           items = {
-            { width = 20 },
-            { width = 50 },
+            { width = 30 },
+            -- { width = 50 },
             { remaining = true },
           },
         }
@@ -122,6 +122,9 @@ return function(opts)
             { ent.ordinal, "NeorgLinkText"}
           }
         end
+        if not entry.file then
+          entry.file = vim.fn.expand("%")
+          end
         return {
           value = entry.line,
           display = make_display,
