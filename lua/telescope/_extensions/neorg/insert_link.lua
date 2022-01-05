@@ -112,7 +112,6 @@ return function(opts)
           separator = ": ",
           items = {
             { width = 30 },
-            -- { width = 50 },
             { remaining = true },
           },
         }
