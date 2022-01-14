@@ -11,6 +11,11 @@ Simply press a key (`<C-l>` in insert mode by default) and select what you want 
 
 `insert_link` only works for elements in the current document.
 
+### Automatic File Link Insertion
+Simply press a key (`<C-f>` in insert mode by default) and select what Neorg file you want to link to.
+
+`insert_file_link` only works for elements in the current document.
+
 # Installation
 First, make sure to pull this plugin down. This plugin does not run any code in of itself. It requires Neorg
 to load it first:

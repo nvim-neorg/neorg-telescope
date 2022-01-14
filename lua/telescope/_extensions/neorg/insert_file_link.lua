@@ -69,7 +69,7 @@ return function(opts)
     opts = opts or {}
 
     pickers.new(opts, {
-        prompt_title = "Insert Link to norg File",
+        prompt_title = "Insert Link to Neorg File",
         results_title = "Linkables",
         finder = finders.new_table({
             results = generate_links(),
