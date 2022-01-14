@@ -42,24 +42,13 @@ local function generate_links()
     end
 
     for _, file in pairs(files[2]) do
---         local full_path_file = files[1] .. "/" .. file
---         local bufnr = dirman.get_file_bufnr(full_path_file)
---         if not bufnr then
---             return
---         end
+        local full_path_file = files[1] .. "/" .. file
+        local bufnr = dirman.get_file_bufnr(full_path_file)
 
---         -- Because we do not want file name to appear in a link to the same file
---         local file_inserted = (function ()
---             if vim.api.nvim_get_current_buf() == bufnr then
---                 return nil
---             else
---                 return file
---             end
---         end)()
-
-        local links = {file = file}
-
-        table.insert(res, links)
+        if vim.api.nvim_get_current_buf() ~= bufnr then
+          local links = {file = file}
+          table.insert(res, links)
+        end
     end
 
     return res
