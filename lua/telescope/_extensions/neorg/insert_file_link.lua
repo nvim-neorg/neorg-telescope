@@ -78,16 +78,16 @@ return function(opts)
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
 
-                local file_path_sans_norg_extension, _ = entry.value.file:gsub("%.norg$", "")
-                local just_file_name, _ = file_path_sans_norg_extension:gsub(".*%/", "")
+                local path_no_extension, _ = entry.value.file:gsub("%.norg$", "")
+                local file_name, _ = path_no_extension:gsub(".*%/", "")
 
                 vim.api.nvim_put(
                     {
                         "{"
-                            .. ":$/" .. file_path_sans_norg_extension .. ":"
+                            .. ":$/" .. path_no_extension .. ":"
                             .. "}"
                             .. "["
-                            .. just_file_name
+                            .. file_name
                             .. "]",
                     },
                     "c",
