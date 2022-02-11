@@ -5,14 +5,27 @@ This repo hosts a 3rd party module for [Neorg](https://github.com/nvim-neorg/neo
 # Features
 ### Fuzzy Searching Any Linkable
 Simply jump to any important element in the workspace. This includes headings, drawers, markers.
+The command for this is `Telescope neorg find_linkable`
+
+![find_linkable](https://user-images.githubusercontent.com/81827001/153651560-ed0849ec-87c1-4932-81e4-f0188ba8b676.png)
 
 ### Automatic Link Insertion
 Simply press a key (`<C-l>` in insert mode by default) and select what you want to link to.
 
-`insert_link` only works for elements in the current document.
+`insert_link` only works for elements in the current workspace.
+
+![insert_link](https://user-images.githubusercontent.com/81827001/153646764-650e3c7a-caa8-43e1-aae6-47a3a3290969.png)
 
 ### Automatic File Link Insertion
-Simply press a key (`<C-f>` in insert mode by default) and select what Neorg file you want to link to.
+You can use `Telescope neorg insert_file_link` to insert a link to a neorg file.
+Notice that this only works for files in the current workspace.
+
+![insert_file_link](https://user-images.githubusercontent.com/81827001/153646847-c43aa368-b5b5-44ac-ba00-b3d98454650d.png)
+
+### Fuzzy Searching Headings
+With `Telescope neorg search_headings` you can search through all the headings in the current file.
+![search_headings](https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png)
+
 
 # Installation
 First, make sure to pull this plugin down. This plugin does not run any code in of itself. It requires Neorg
@@ -69,9 +82,9 @@ If you have any awesome ideas or any code you want to contribute then go ahead!
 Any sort of help is appreciated :heart:
 
 #### Some Ideas Right Off The Top Of My Head
-- Inserting a link to any linkable element in the whole workspace rather than just in the current document
 - Fuzzy searching content in paragraphs only
 - Fuzzy searching content in the current heading
 
 # GIFs
-![telescope-showcase](https://user-images.githubusercontent.com/76052559/127364253-7570a584-e80b-4365-9a9f-a3df8984472d.gif)
+### Insert Link
+![insert_link_gif](https://user-images.githubusercontent.com/81827001/153654205-250d4dcc-014a-46ac-a68d-df7d0432ce58.gif)
