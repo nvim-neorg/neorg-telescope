@@ -46,7 +46,8 @@ local function pick_tasks(project)
             actions_set.select:replace(function()
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
-                dump(entry.value)
+                neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
+                -- dump(entry.value)
             end)
             return true
         end,
