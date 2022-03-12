@@ -4,6 +4,7 @@ local state = require("telescope.actions.state")
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
+local previewers = require("telescope.previewers")
 
 local neorg_loaded, _ = pcall(require, "neorg.modules")
 
@@ -28,7 +29,7 @@ local function pick_tasks(project)
     local opts = {}
 
     pickers.new(opts, {
-        prompt_title = "Picker Project Tasks:" .. project.content,
+        prompt_title = "Picker Project Tasks: " .. project.content,
         results_title = "Tasks",
         finder = finders.new_table({
             results = tasks,
@@ -54,6 +55,29 @@ local function pick_tasks(project)
     }):find()
 end
 
+local function get_task_list(project)
+    local project_tasks = get_project_tasks()
+    local raw_tasks = project_tasks[project.uuid]
+    local tasks = {}
+    local states = {
+        ["undone"] = "-[ ] ",
+        ["done"] = "-[x] ",
+        ["pending"] = "-[-] ",
+        ["cancelled"] = "-[_] ",
+        ["uncertain"] = "-[?] ",
+        ["urgent"] = "-[!] ",
+        ["recurring"] = "-[+] ",
+        ["onhold"] = "-[=] ",
+    }
+    if raw_tasks == {} or not raw_tasks then
+        return {}
+    end
+    for _, task in ipairs(raw_tasks) do
+        table.insert(tasks, states[task.state] .. task.content)
+    end
+    return tasks
+end
+
 return function(opts)
     opts = opts or {}
 
@@ -70,7 +94,13 @@ return function(opts)
                 }
             end,
         }),
-        previewer = nil,
+        previewer = previewers.new_buffer_previewer({
+            define_preview = function(self, entry, status)
+                local tasks = get_task_list(entry.value)
+                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, tasks)
+                vim.bo[self.state.bufnr].filetype = "norg"
+            end,
+        }),
         sorter = conf.generic_sorter(opts),
         attach_mappings = function(prompt_bufnr)
             actions_set.select:replace(function()
