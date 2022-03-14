@@ -13,6 +13,17 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
+local states = {
+    ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
+    ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
+    ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
+    ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
+    ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
+    ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
+    ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
+    ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
+}
+
 local function get_project_tasks()
     local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
     tasks_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(tasks_raw, "task")
@@ -37,14 +48,75 @@ local function pick_tasks(project)
         finder = finders.new_table({
             results = tasks,
             entry_maker = function(entry)
+                local displayer = entry_display.create({
+                    items = {
+                        { width = 100 },
+                    },
+                })
+                local function make_display(ent)
+                    return displayer({
+                        {
+                            entry.content,
+                            function()
+                                return { { { 0, 100 }, states[entry.state][2] } }
+                            end,
+                        },
+                    })
+                end
+
                 return {
                     value = entry,
-                    display = entry.content,
+                    display = function(tbl)
+                        return make_display(tbl.value)
+                    end,
                     ordinal = entry.content,
                 }
             end,
         }),
-        previewer = nil,
+        previewer = previewers.new_buffer_previewer({
+            define_preview = function(self, entry, status)
+                local lines = {}
+                local line_nr = 1
+                local special_lines = {}
+                if entry.value.contexts then
+                    table.insert(lines, "Contexts:")
+                    table.insert(special_lines, line_nr)
+                    line_nr = line_nr + 1
+                    for _, context in ipairs(entry.value.contexts) do
+                        table.insert(lines, context)
+                        line_nr = line_nr + 1
+                    end
+                end
+                if entry.value["waiting.for"] then
+                    table.insert(lines, "Waiting for:")
+                    table.insert(special_lines, line_nr)
+                    line_nr = line_nr + 1
+                    for _, waiting_for in ipairs(entry.value["waiting.for"]) do
+                        table.insert(lines, waiting_for)
+                        line_nr = line_nr + 1
+                    end
+                end
+                if entry.value["time.start"] then
+                    table.insert(lines, "Time start:")
+                    table.insert(special_lines, line_nr)
+                    line_nr = line_nr + 1
+                    table.insert(lines, entry.value["time.start"][1])
+                    line_nr = line_nr + 1
+                end
+                if entry.value["time.due"] then
+                    table.insert(lines, "Time due:")
+                    table.insert(special_lines, line_nr)
+                    line_nr = line_nr + 1
+                    table.insert(lines, entry.value["time.due"][1])
+                    line_nr = line_nr + 1
+                end
+                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
+                for _, line_number in ipairs(special_lines) do
+                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", line_number - 1, 0, -1)
+                end
+            end,
+        }),
+
         sorter = conf.generic_sorter(opts),
         attach_mappings = function(prompt_bufnr)
             actions_set.select:replace(function()
@@ -62,16 +134,6 @@ local function get_task_list(project)
     local raw_tasks = project_tasks[project.uuid]
     local tasks = {}
     local highlights = {}
-    local states = {
-        ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
-        ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
-        ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
-        ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
-        ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
-        ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
-        ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
-        ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
-    }
     if raw_tasks == {} or not raw_tasks then
         return {}, {}
     end
