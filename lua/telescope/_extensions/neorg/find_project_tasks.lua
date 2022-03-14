@@ -6,6 +6,8 @@ local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
 local previewers = require("telescope.previewers")
 
+local ns = vim.api.nvim_create_namespace("neorg-telescope_project_tasks")
+
 local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
@@ -59,23 +61,25 @@ local function get_task_list(project)
     local project_tasks = get_project_tasks()
     local raw_tasks = project_tasks[project.uuid]
     local tasks = {}
+    local highlights = {}
     local states = {
-        ["undone"] = "-[ ] ",
-        ["done"] = "-[x] ",
-        ["pending"] = "-[-] ",
-        ["cancelled"] = "-[_] ",
-        ["uncertain"] = "-[?] ",
-        ["urgent"] = "-[!] ",
-        ["recurring"] = "-[+] ",
-        ["onhold"] = "-[=] ",
+        ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
+        ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
+        ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
+        ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
+        ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
+        ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
+        ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
+        ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
     }
     if raw_tasks == {} or not raw_tasks then
-        return {}
+        return {}, {}
     end
     for _, task in ipairs(raw_tasks) do
-        table.insert(tasks, states[task.state] .. task.content)
+        table.insert(tasks, states[task.state][1] .. task.content)
+        table.insert(highlights, states[task.state][2])
     end
-    return tasks
+    return tasks, highlights
 end
 
 return function(opts)
@@ -96,9 +100,12 @@ return function(opts)
         }),
         previewer = previewers.new_buffer_previewer({
             define_preview = function(self, entry, status)
-                local tasks = get_task_list(entry.value)
+                local tasks, highlights = get_task_list(entry.value)
                 vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, tasks)
                 vim.bo[self.state.bufnr].filetype = "norg"
+                for i, highlight in ipairs(highlights) do
+                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, highlight, i - 1, 0, 5)
+                end
             end,
         }),
         sorter = conf.generic_sorter(opts),
