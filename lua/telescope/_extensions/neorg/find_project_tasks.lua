@@ -5,6 +5,7 @@ local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
 local previewers = require("telescope.previewers")
+local entry_display = require("telescope.pickers.entry_display")
 
 local ns = vim.api.nvim_create_namespace("neorg-telescope_project_tasks")
 
@@ -13,14 +14,14 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
 local function get_project_tasks()
-    local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks") -- or "tasks"
+    local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
     tasks_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(tasks_raw, "task")
     local projects_tasks = neorg.modules.get_module("core.gtd.queries").sort_by("project_uuid", tasks_raw)
     return projects_tasks
 end
 
 local function get_projects()
-    local projects_raw = neorg.modules.get_module("core.gtd.queries").get("projects") -- or "projects"
+    local projects_raw = neorg.modules.get_module("core.gtd.queries").get("projects")
     projects_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(projects_raw, "project")
     return projects_raw
 end
@@ -50,7 +51,6 @@ local function pick_tasks(project)
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
-                -- dump(entry.value)
             end)
             return true
         end,
@@ -91,9 +91,35 @@ return function(opts)
         finder = finders.new_table({
             results = get_projects(),
             entry_maker = function(entry)
+                local displayer = entry_display.create({
+                    items = {
+                        { width = 100 },
+                    },
+                })
+                local function make_display(ent)
+                    return displayer({
+                        {
+                            entry.content,
+                            function()
+                                --- check if there are no tasks in the project
+                                local tasks = get_task_list(ent)
+                                if #tasks == 0 then
+                                    --- If no tasks highlight with "Comment"
+                                    return { { { 0, 100 }, "Comment" } }
+                                    --- Highlight with "Special"
+                                else
+                                    return { { { 0, 100 }, "Special" } }
+                                end
+                            end,
+                        },
+                    })
+                end
+
                 return {
                     value = entry,
-                    display = entry.content,
+                    display = function(tbl)
+                        return make_display(tbl.value)
+                    end,
                     ordinal = entry.content,
                 }
             end,
