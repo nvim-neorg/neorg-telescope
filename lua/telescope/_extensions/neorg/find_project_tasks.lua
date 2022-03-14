@@ -139,7 +139,7 @@ return function(opts)
             actions_set.select:replace(function()
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
-                local tasks = get_task_list(entry)
+                local tasks = get_task_list(entry.value)
                 if #tasks == 0 then
                     neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
                     return true
