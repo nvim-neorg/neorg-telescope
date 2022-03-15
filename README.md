@@ -32,6 +32,7 @@ With `Telescope neorg search_headings` you can search through all the headings i
 Use `Telescope neorg find_project_tasks` to pick a project and then the tasks inside it.
 You can then jump to those tasks.
 If you select and empty project (colored gray) then you'll jump to the project.
+![find_project_tasks](https://user-images.githubusercontent.com/81827001/158395250-b4de0f8b-c693-4f55-ae6e-c66f6055f741.mov)
 
 ### Find Context Tasks
 With `Telescope neorg find_context_tasks` you pick a context and then tasks.
