@@ -8,105 +8,13 @@ local conf = require("telescope.config").values
 local previewers = require("telescope.previewers")
 local entry_display = require("telescope.pickers.entry_display")
 
-local ns = vim.api.nvim_create_namespace("neorg-telescope_project_tasks")
+local ns = vim.api.nvim_create_namespace("neorg-gtd-picker")
 
 local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
 local states = utils.states
-
-local function pick_tasks(project)
-    local project_tasks = utils.get_project_tasks()
-    local tasks = project_tasks[project.uuid]
-    local opts = {}
-
-    pickers.new(opts, {
-        prompt_title = "Picker Project Tasks: " .. project.content,
-        results_title = "Tasks",
-        finder = finders.new_table({
-            results = tasks,
-            entry_maker = function(entry)
-                local displayer = entry_display.create({
-                    items = {
-                        { width = 100 },
-                    },
-                })
-                local function make_display(ent)
-                    return displayer({
-                        {
-                            entry.content,
-                            function()
-                                return { { { 0, 100 }, states[entry.state][2] } }
-                            end,
-                        },
-                    })
-                end
-
-                return {
-                    value = entry,
-                    display = function(tbl)
-                        return make_display(tbl.value)
-                    end,
-                    ordinal = entry.content,
-                }
-            end,
-        }),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local lines = {}
-                local line_nr = 1
-                local special_lines = {}
-                if entry.value.contexts then
-                    table.insert(lines, "Contexts:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    for _, context in ipairs(entry.value.contexts) do
-                        table.insert(lines, context)
-                        line_nr = line_nr + 1
-                    end
-                end
-                if entry.value["waiting.for"] then
-                    table.insert(lines, "Waiting for:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    for _, waiting_for in ipairs(entry.value["waiting.for"]) do
-                        table.insert(lines, waiting_for)
-                        line_nr = line_nr + 1
-                    end
-                end
-                if entry.value["time.start"] then
-                    table.insert(lines, "Time start:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    table.insert(lines, entry.value["time.start"][1])
-                    line_nr = line_nr + 1
-                end
-                if entry.value["time.due"] then
-                    table.insert(lines, "Time due:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    table.insert(lines, entry.value["time.due"][1])
-                    line_nr = line_nr + 1
-                end
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
-                for _, line_number in ipairs(special_lines) do
-                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", line_number - 1, 0, -1)
-                end
-            end,
-        }),
-
-        sorter = conf.generic_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-            actions_set.select:replace(function()
-                local entry = state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
-            end)
-            return true
-        end,
-    }):find()
-end
 
 local function get_task_list(project)
     local project_tasks = utils.get_project_tasks()
@@ -200,7 +108,7 @@ local function pick_projects(aof)
                     return true
                 end
 
-                pick_tasks(entry.value)
+                utils.pick_project_tasks(entry.value)
             end)
             return true
         end,

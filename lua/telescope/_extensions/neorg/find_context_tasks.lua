@@ -7,7 +7,7 @@ local conf = require("telescope.config").values
 local previewers = require("telescope.previewers")
 local entry_display = require("telescope.pickers.entry_display")
 
-local ns = vim.api.nvim_create_namespace("neorg-telescope_context_tasks")
+local ns = vim.api.nvim_create_namespace("neorg-gtd-picker")
 
 local neorg_loaded, _ = pcall(require, "neorg.modules")
 
