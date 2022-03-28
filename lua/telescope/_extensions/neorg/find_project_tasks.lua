@@ -1,3 +1,4 @@
+local utils = require("neorg.telescope_utils")
 local actions = require("telescope.actions")
 local actions_set = require("telescope.actions.set")
 local state = require("telescope.actions.state")
@@ -13,32 +14,10 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
-local states = {
-    ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
-    ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
-    ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
-    ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
-    ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
-    ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
-    ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
-    ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
-}
-
-local function get_project_tasks()
-    local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
-    tasks_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(tasks_raw, "task")
-    local projects_tasks = neorg.modules.get_module("core.gtd.queries").sort_by("project_uuid", tasks_raw)
-    return projects_tasks
-end
-
-local function get_projects()
-    local projects_raw = neorg.modules.get_module("core.gtd.queries").get("projects")
-    projects_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(projects_raw, "project")
-    return projects_raw
-end
+local states = utils.states
 
 local function pick_tasks(project)
-    local project_tasks = get_project_tasks()
+    local project_tasks = utils.get_project_tasks()
     local tasks = project_tasks[project.uuid]
     local opts = {}
 
@@ -130,7 +109,7 @@ local function pick_tasks(project)
 end
 
 local function get_task_list(project)
-    local project_tasks = get_project_tasks()
+    local project_tasks = utils.get_project_tasks()
     local raw_tasks = project_tasks[project.uuid]
     local tasks = {}
     local highlights = {}
@@ -151,7 +130,7 @@ return function(opts)
         prompt_title = "Pick Neorg Gtd Projects",
         results_title = "Projects",
         finder = finders.new_table({
-            results = get_projects(),
+            results = utils.get_projects(),
             entry_maker = function(entry)
                 local displayer = entry_display.create({
                     items = {

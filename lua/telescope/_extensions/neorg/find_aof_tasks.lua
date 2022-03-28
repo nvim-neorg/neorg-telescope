@@ -1,3 +1,4 @@
+local utils = require("neorg.telescope_utils")
 local actions = require("telescope.actions")
 local actions_set = require("telescope.actions.set")
 local state = require("telescope.actions.state")
@@ -24,42 +25,14 @@ local states = {
     ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
 }
 
-local function get_project_tasks()
-    local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
-    tasks_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(tasks_raw, "task")
-    local projects_tasks = neorg.modules.get_module("core.gtd.queries").sort_by("project_uuid", tasks_raw)
-    return projects_tasks
-end
-
-local function get_projects()
-    local projects_raw = neorg.modules.get_module("core.gtd.queries").get("projects")
-    projects_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(projects_raw, "project")
-    return projects_raw
-end
-
-local function get_task_list(project)
-    local project_tasks = get_project_tasks()
-    local raw_tasks = project_tasks[project.uuid]
-    local tasks = {}
-    local highlights = {}
-    if raw_tasks == {} or not raw_tasks then
-        return {}, {}
-    end
-    for _, task in ipairs(raw_tasks) do
-        table.insert(tasks, states[task.state][1] .. task.content)
-        table.insert(highlights, states[task.state][2])
-    end
-    return tasks, highlights
-end
-
 local function get_aof_projects()
-    local projects = get_projects()
+    local projects = utils.get_projects()
     local projects_by_aof = neorg.modules.get_module("core.gtd.queries").sort_by("area_of_focus", projects)
     return projects_by_aof
 end
 
 local function pick_aof_tasks(aof)
-    local project_tasks = get_project_tasks()
+    local project_tasks = utils.get_project_tasks()
     local aof_projects = get_aof_projects()
     local tasks = {}
     for _, project in ipairs(aof_projects[aof]) do
@@ -190,7 +163,7 @@ return function(opts)
                     end
                     return displayer({
                         {
-                            ent.value,
+                            display,
                             function()
                                 --- check if there are no tasks in the project
                                 local aof_projects = get_aof_projects()
