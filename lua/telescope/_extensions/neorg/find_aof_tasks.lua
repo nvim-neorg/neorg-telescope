@@ -23,20 +23,13 @@ local function get_aof_projects()
 end
 
 local function get_aof_tasks(aof)
-    local project_tasks = utils.get_project_tasks()
-    local aof_projects = get_aof_projects()
-    local raw_tasks = {}
+    local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
+    tasks_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(tasks_raw, "task")
+    local aof_tasks = neorg.modules.get_module("core.gtd.queries").sort_by("area_of_focus", tasks_raw)
+    aof_tasks = aof_tasks[aof]
     local tasks = {}
     local highlights = {}
-    for _, project in ipairs(aof_projects[aof]) do
-        local pr_tasks = project_tasks[project.uuid]
-        if pr_tasks and pr_tasks ~= {} then
-            for _, task in ipairs(pr_tasks) do
-                table.insert(raw_tasks, task)
-            end
-        end
-    end
-    for _, task in ipairs(raw_tasks) do
+    for _, task in ipairs(aof_tasks) do
         table.insert(tasks, states[task.state][1] .. task.content)
         table.insert(highlights, states[task.state][2])
     end
@@ -44,17 +37,10 @@ local function get_aof_tasks(aof)
 end
 
 local function pick_aof_tasks(aof)
-    local project_tasks = utils.get_project_tasks()
-    local aof_projects = get_aof_projects()
-    local tasks = {}
-    for _, project in ipairs(aof_projects[aof]) do
-        local pr_tasks = project_tasks[project.uuid]
-        if pr_tasks and pr_tasks ~= {} then
-            for _, task in ipairs(pr_tasks) do
-                table.insert(tasks, task)
-            end
-        end
-    end
+    local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
+    tasks_raw = neorg.modules.get_module("core.gtd.queries").add_metadata(tasks_raw, "task")
+    local aof_tasks = neorg.modules.get_module("core.gtd.queries").sort_by("area_of_focus", tasks_raw)
+    local tasks = aof_tasks[aof]
     local opts = {}
 
     pickers.new(opts, {
