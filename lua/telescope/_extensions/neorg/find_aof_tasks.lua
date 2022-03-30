@@ -22,6 +22,27 @@ local function get_aof_projects()
     return projects_by_aof
 end
 
+local function get_aof_tasks(aof)
+    local project_tasks = utils.get_project_tasks()
+    local aof_projects = get_aof_projects()
+    local raw_tasks = {}
+    local tasks = {}
+    local highlights = {}
+    for _, project in ipairs(aof_projects[aof]) do
+        local pr_tasks = project_tasks[project.uuid]
+        if pr_tasks and pr_tasks ~= {} then
+            for _, task in ipairs(pr_tasks) do
+                table.insert(raw_tasks, task)
+            end
+        end
+    end
+    for _, task in ipairs(raw_tasks) do
+        table.insert(tasks, states[task.state][1] .. task.content)
+        table.insert(highlights, states[task.state][2])
+    end
+    return tasks, highlights
+end
+
 local function pick_aof_tasks(aof)
     local project_tasks = utils.get_project_tasks()
     local aof_projects = get_aof_projects()
@@ -150,7 +171,7 @@ return function(opts)
                 local function make_display(ent)
                     local display = ent.value
                     if display == "_" then
-                        display = "Projects without aof"
+                        display = "Tasks without aof"
                     end
                     return displayer({
                         {
@@ -179,9 +200,12 @@ return function(opts)
         }),
         previewer = previewers.new_buffer_previewer({
             define_preview = function(self, entry, status)
-                local projects_preview = get_project_list(entry.value)
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, projects_preview)
+                local tasks, highlights = get_aof_tasks(entry.value)
+                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, tasks)
                 vim.bo[self.state.bufnr].filetype = "norg"
+                for i, highlight in ipairs(highlights) do
+                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, highlight, i - 1, 0, 5)
+                end
             end,
         }),
         sorter = conf.generic_sorter(opts),

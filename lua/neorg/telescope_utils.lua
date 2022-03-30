@@ -9,14 +9,14 @@ local ns = vim.api.nvim_create_namespace("neorg-gtd-picker")
 
 --- Neorg task states: `["<task-state>"] = { "- [<sth>] ",<highlight>}`
 utils.states = {
-    ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
-    ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
-    ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
-    ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
-    ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
-    ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
-    ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
-    ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
+    ["undone"] = { "- [ ] ", "NeorgTodoItem1Undone" },
+    ["done"] = { "- [x] ", "NeorgTodoItem1Done" },
+    ["pending"] = { "- [-] ", "NeorgTodoItem1Pending" },
+    ["cancelled"] = { "- [_] ", "NeorgTodoItem1Cancelled" },
+    ["uncertain"] = { "- [?] ", "NeorgTodoItem1Uncertain" },
+    ["urgent"] = { "- [!] ", "NeorgTodoItem1Urgent" },
+    ["recurring"] = { "- [+] ", "NeorgTodoItem1Recurring" },
+    ["on_hold"] = { "- [=] ", "NeorgTodoItem1OnHold" },
 }
 
 --- Gets all gtd projects
