@@ -14,16 +14,7 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
-local states = {
-    ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
-    ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
-    ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
-    ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
-    ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
-    ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
-    ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
-    ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
-}
+local states = utils.states
 
 local function get_aof_projects()
     local projects = utils.get_projects()

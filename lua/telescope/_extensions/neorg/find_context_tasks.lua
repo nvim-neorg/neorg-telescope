@@ -1,3 +1,4 @@
+local utils = require("neorg.telescope_utils")
 local actions = require("telescope.actions")
 local actions_set = require("telescope.actions.set")
 local state = require("telescope.actions.state")
@@ -13,16 +14,7 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
-local states = {
-    ["undone"] = { "-[ ] ", "NeorgTodoItem1Undone" },
-    ["done"] = { "-[x] ", "NeorgTodoItem1Done" },
-    ["pending"] = { "-[-] ", "NeorgTodoItem1Pending" },
-    ["cancelled"] = { "-[_] ", "NeorgTodoItem1Cancelled" },
-    ["uncertain"] = { "-[?] ", "NeorgTodoItem1Uncertain" },
-    ["urgent"] = { "-[!] ", "NeorgTodoItem1Urgent" },
-    ["recurring"] = { "-[+] ", "NeorgTodoItem1Recurring" },
-    ["on_hold"] = { "-[=] ", "NeorgTodoItem1OnHold" },
-}
+local states = utils.states
 
 local function get_context_tasks()
     local tasks_raw = neorg.modules.get_module("core.gtd.queries").get("tasks")
