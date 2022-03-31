@@ -4,6 +4,10 @@ local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local entry_display = require("telescope.pickers.entry_display")
 local previewers = require("telescope.previewers")
+local actions = require("telescope.actions")
+local state = require("telescope.actions.state")
+local actions_set = require("telescope.actions.set")
+local conf = require("telescope.config").values
 
 local ns = vim.api.nvim_create_namespace("neorg-gtd-picker")
 
@@ -18,6 +22,20 @@ utils.states = {
     ["recurring"] = { "- [+] ", "NeorgTodoItem1Recurring" },
     ["on_hold"] = { "- [=] ", "NeorgTodoItem1OnHold" },
 }
+
+--- Gets the name of a project
+---@param uuid string The uuid
+---@return string name
+utils.get_project_name = function(uuid)
+    local projects = neorg.modules.get_module("core.gtd.queries").get("projects")
+    projects = neorg.modules.get_module("core.gtd.queries").add_metadata(projects, "project")
+    for _, project in ipairs(projects) do
+        if project.uuid == uuid then
+            return project.content
+        end
+    end
+    return ""
+end
 
 --- Gets all gtd projects
 ---@return table projects
@@ -35,7 +53,7 @@ utils.pick_project_tasks = function(project)
     local opts = {}
 
     pickers.new(opts, {
-        prompt_title = "Picker Project Tasks: " .. project.content,
+        prompt_title = "Pick Project Tasks: " .. project.content,
         results_title = "Tasks",
         finder = finders.new_table({
             results = tasks,

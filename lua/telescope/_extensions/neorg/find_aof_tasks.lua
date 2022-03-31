@@ -79,6 +79,13 @@ local function pick_aof_tasks(aof)
                 local lines = {}
                 local line_nr = 1
                 local special_lines = {}
+                if entry.value.project_uuid then
+                    table.insert(lines, "Project:")
+                    table.insert(special_lines, line_nr)
+                    line_nr = line_nr + 1
+                    table.insert(lines, utils.get_project_name(entry.value.project_uuid))
+                    line_nr = line_nr + 1
+                end
                 if entry.value.contexts then
                     table.insert(lines, "Contexts:")
                     table.insert(special_lines, line_nr)
