@@ -55,6 +55,7 @@ utils.pick_project_tasks = function(project)
     pickers.new(opts, {
         prompt_title = "Pick Project Tasks: " .. project.content,
         results_title = "Tasks",
+        preview_title = "Task details",
         finder = finders.new_table({
             results = tasks,
             entry_maker = function(entry)

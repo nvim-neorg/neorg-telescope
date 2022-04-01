@@ -35,7 +35,7 @@ local function pick_tasks(context)
     pickers.new(opts, {
         prompt_title = title,
         results_title = "Tasks",
-        preview_title = "Details",
+        preview_title = "Task Details",
         finder = finders.new_table({
             results = tasks,
             entry_maker = function(entry)
@@ -132,7 +132,7 @@ return function(opts)
     pickers.new(opts, {
         prompt_title = "Pick Neorg Gtd Contexts",
         results_title = "Contexts",
-        preview_title = "Tasks",
+        preview_title = "Tasks inside context",
         finder = finders.new_table({
             results = vim.tbl_keys(get_context_tasks()),
             entry_maker = function(entry)

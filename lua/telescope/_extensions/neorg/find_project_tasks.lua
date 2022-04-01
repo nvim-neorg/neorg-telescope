@@ -37,6 +37,7 @@ return function(opts)
     pickers.new(opts, {
         prompt_title = "Pick Neorg Gtd Projects",
         results_title = "Projects",
+        preview_title = "Tasks inside project",
         finder = finders.new_table({
             results = utils.get_projects(),
             entry_maker = function(entry)

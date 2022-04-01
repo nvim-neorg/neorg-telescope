@@ -46,6 +46,7 @@ local function pick_aof_tasks(aof)
     pickers.new(opts, {
         prompt_title = "Pick AOF Tasks: " .. aof,
         results_title = "Tasks",
+        preview_title = "Task Details",
         finder = finders.new_table({
             results = tasks,
             entry_maker = function(entry)
@@ -137,22 +138,13 @@ local function pick_aof_tasks(aof)
     }):find()
 end
 
-local function get_project_list(aof)
-    local aof_projects = get_aof_projects()
-    local projects = aof_projects[aof]
-    local project_names = {}
-    for _, project in ipairs(projects) do
-        table.insert(project_names, project.content)
-    end
-    return project_names
-end
-
 return function(opts)
     opts = opts or {}
 
     pickers.new(opts, {
         prompt_title = "Pick Area Of Focus",
         results_title = "AOFs",
+        preview_title = "Tasks inside AOF",
         finder = finders.new_table({
             results = vim.tbl_keys(get_aof_projects()),
             entry_maker = function(entry)

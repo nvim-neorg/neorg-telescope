@@ -50,7 +50,8 @@ local function pick_projects(aof)
 
     pickers.new(opts, {
         prompt_title = "Pick Neorg Gtd Projects",
-        results_title = "Projects from ",
+        results_title = "Projects from " .. aof,
+        preview_title = "Tasks inside project",
         finder = finders.new_table({
             results = projects_by_aof[aof],
             entry_maker = function(entry)
@@ -131,6 +132,7 @@ return function(opts)
     pickers.new(opts, {
         prompt_title = "Pick Area Of Focus",
         results_title = "AOFs",
+        preview_title = "Projects inside AOF",
         finder = finders.new_table({
             results = get_aofs(),
             entry_maker = function(entry)
