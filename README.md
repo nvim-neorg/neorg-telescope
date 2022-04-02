@@ -26,6 +26,25 @@ Notice that this only works for files in the current workspace.
 With `Telescope neorg search_headings` you can search through all the headings in the current file.
 ![search_headings](https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png)
 
+## Gtd Pickers
+
+### Find Project Tasks
+Use `Telescope neorg find_project_tasks` to pick a project and then the tasks inside it.
+You can then jump to those tasks.
+If you select and empty project (colored gray) then you'll jump to the project.
+![find_project_tasks](https://user-images.githubusercontent.com/81827001/158395250-b4de0f8b-c693-4f55-ae6e-c66f6055f741.mov)
+
+### Find Context Tasks
+With `Telescope neorg find_context_tasks` you pick a context and then tasks.
+![find_context_tasks](https://user-images.githubusercontent.com/81827001/158401579-ef8e7d9a-2d84-4e05-8f7d-d1f3815a67ee.mov)
+
+### Find AOF Tasks
+You can use `Telescope neorg find_aof_tasks` to pick an aof and then search through the tasks of it.
+![find_aof_tasks](https://user-images.githubusercontent.com/81827001/158401242-5d61c18a-ab77-4942-ad31-0e6dede410df.mov)
+
+### Find AOF Project Tasks
+When you use `Telescope neorg find_aof_project_tasks` you can pick an area of focus, then a project inside it and last but not least you can search for tasks inside the project.
+![find_aof_project_tasks](https://user-images.githubusercontent.com/81827001/158401841-9ca3a311-bac1-4733-9a6e-6125003d8a38.mov)
 
 # Installation
 First, make sure to pull this plugin down. This plugin does not run any code in of itself. It requires Neorg
