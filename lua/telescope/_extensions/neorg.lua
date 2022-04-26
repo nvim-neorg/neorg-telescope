@@ -8,5 +8,6 @@ return require("telescope").register_extension({
         find_project_tasks = require("neorg.modules.core.integrations.telescope.module").public.find_project_tasks,
         find_aof_tasks = require("neorg.modules.core.integrations.telescope.module").public.find_aof_tasks,
         find_aof_project_tasks = require("neorg.modules.core.integrations.telescope.module").public.find_aof_project_tasks,
+        find_workspaces = require("neorg.modules.core.integrations.telescope.module").public.find_workspaces
     },
 })
