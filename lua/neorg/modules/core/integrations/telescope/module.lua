@@ -26,6 +26,7 @@ module.load = function()
         "find_aof_project_tasks",
         "find_aof_tasks",
         "find_context_tasks",
+        "switch_workspace",
     })
 end
 
@@ -38,6 +39,7 @@ module.public = {
     find_context_tasks = require("telescope._extensions.neorg.find_context_tasks"),
     find_aof_tasks = require("telescope._extensions.neorg.find_aof_tasks"),
     find_aof_project_tasks = require("telescope._extensions.neorg.find_aof_project_tasks"),
+    switch_workspace = require("telescope._extensions.neorg.switch_workspace"),
 }
 
 module.on_event = function(event)
@@ -57,6 +59,8 @@ module.on_event = function(event)
         module.public.find_aof_project_tasks()
     elseif event.split_type[2] == "core.integrations.telescope.find_context_tasks" then
         module.public.find_context_tasks()
+    elseif event.split_type[2] == "core.integrations.telescope.switch_workspace" then
+        module.public.switch_workspace()
     end
 end
 
@@ -70,6 +74,7 @@ module.events.subscribed = {
         ["core.integrations.telescope.find_context_tasks"] = true,
         ["core.integrations.telescope.find_aof_tasks"] = true,
         ["core.integrations.telescope.find_aof_project_tasks"] = true,
+        ["core.integrations.telescope.switch_workspace"] = true,
     },
 }
 
