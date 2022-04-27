@@ -7,34 +7,60 @@ local action_set = require("telescope.actions.set")
 local action_state = require("telescope.actions.state")
 local state = require("telescope.actions.state")
 local conf = require("telescope.config").values
+local previewers = require("telescope.previewers")
 
 local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
+local workspaces_raw = neorg.modules.get_module("core.norg.dirman").get_workspaces()
+local ns = vim.api.nvim_create_namespace("neorg-tele-workspace-preview")
+local workspaces = {}
+
+for name, path in pairs(workspaces_raw) do
+    table.insert(workspaces, { name = name, path = path })
+end
+
 return function(options)
     local opts = options
         or themes.get_dropdown({
             border = true,
-            previewer = false,
-            shorten_path = false,
-            prompt_prefix = " ◈  ",
-            -- prompt_prefix = "  ",
             layout_config = {
                 prompt_position = "top",
             },
         })
 
-    local results = neorg.modules.get_module("core.norg.dirman").get_workspaces()
-    results = vim.tbl_keys(results)
-
     pickers.new(opts, {
-        prompt_title = "Choose workspace",
+        prompt_title = "Switch Workspace",
+        preview_title = "Details",
+        results_title = "Workspaces",
         finder = finders.new_table({
-            results = results,
-            entry_maker = opts.entry_maker,
+            results = workspaces,
+            entry_maker = function(ws)
+                return {
+                    value = ws,
+                    display = ws.name,
+                    ordinal = ws.name,
+                }
+            end,
         }),
         sorter = conf.generic_sorter(opts),
+        previewer = previewers.new_buffer_previewer({
+            define_preview = function(self, entry, status)
+                local workspace = entry.value
+                local lines = {}
+                table.insert(lines, "Path:")
+                table.insert(lines, workspace.path)
+                table.insert(lines, "Files:")
+                local files = neorg.modules.get_module("core.norg.dirman").get_norg_files(workspace.name)
+                for _, file in ipairs(files) do
+                    table.insert(lines, file)
+                end
+                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
+                vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 0, 0, -1)
+                vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 2, 0, -1)
+            end,
+        }),
         attach_mappings = function(prompt_bufnr)
             action_set.select:replace(function()
                 local entry = state.get_selected_entry()
