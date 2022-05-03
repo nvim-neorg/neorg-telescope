@@ -19,7 +19,9 @@ Simply press a key (`<C-l>` in insert mode by default) and select what you want 
 ### Automatic File Link Insertion
 You can use `Telescope neorg insert_file_link` to insert a link to a neorg file.
 Notice that this only works for files in the current workspace.
-Note: the prompt will be used if no selection is chosen.
+Note: If no file is selected a link to a file with the name of the prompt value
+will be inserted. This file will be created if you use the link with 
+[neorg's hop](https://github.com/nvim-neorg/neorg/wiki/Esupports-Hop)
 
 ![insert_file_link](https://user-images.githubusercontent.com/81827001/153646847-c43aa368-b5b5-44ac-ba00-b3d98454650d.png)
 
