@@ -78,7 +78,7 @@ return function(opts)
                 local entry = state.get_selected_entry()
 
                 local path_no_extension
-        
+
                 if entry then
                   path_no_extension, _ = entry.value.file:gsub("%.norg$", "")
                 else
