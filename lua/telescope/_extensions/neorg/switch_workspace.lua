@@ -70,7 +70,9 @@ return function(options)
             action_set.select:replace(function()
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
-                neorg.modules.get_module("core.norg.dirman").open_workspace(entry.value.name)
+                if entry then
+                    neorg.modules.get_module("core.norg.dirman").open_workspace(entry.value.name)
+                end
             end)
             return true
         end,
