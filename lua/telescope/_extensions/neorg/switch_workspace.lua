@@ -13,15 +13,20 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
-local workspaces_raw = neorg.modules.get_module("core.norg.dirman").get_workspaces()
 local ns = vim.api.nvim_create_namespace("neorg-tele-workspace-preview")
-local workspaces = {}
 
-for name, path in pairs(workspaces_raw) do
-    table.insert(workspaces, { name = name, path = path })
-end
+local workspaces
 
 return function(options)
+    if not workspaces then
+        workspaces = {}
+
+        local workspaces_raw = neorg.modules.get_module("core.norg.dirman").get_workspaces()
+        for name, path in pairs(workspaces_raw) do
+            table.insert(workspaces, { name = name, path = path })
+        end
+    end
+
     local opts = options
         or themes.get_dropdown({
             border = true,
@@ -65,7 +70,9 @@ return function(options)
             action_set.select:replace(function()
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
-                neorg.modules.get_module("core.norg.dirman").open_workspace(entry[1])
+                if entry then
+                    neorg.modules.get_module("core.norg.dirman").open_workspace(entry.value.name)
+                end
             end)
             return true
         end,
