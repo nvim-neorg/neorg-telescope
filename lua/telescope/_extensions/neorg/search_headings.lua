@@ -11,8 +11,6 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
-local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
-
 local bufnr = vim.api.nvim_get_current_buf()
 
 local filename = vim.fn.expand(vim.api.nvim_buf_get_name(bufnr))
@@ -24,13 +22,13 @@ return function(options)
     previewer = false,
     shorten_path = false,
     prompt_prefix = " ◈  ",
-    -- prompt_prefix = "  ",
     layout_config = {
       prompt_position = "top",
     },
   })
 
   local lines_with_numbers = {}
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
 
   for lnum, line in ipairs(lines) do
     local match = line:match("^%s*%*+%s+")
