@@ -25,6 +25,6 @@ return function(opts)
 
     require("telescope.builtin").find_files({
         search_dirs = { current_workspace },
-        prompt_title = "Find Norg Files",
+        prompt_title = opts.prompt_title or "Find Norg Files",
     })
 end
