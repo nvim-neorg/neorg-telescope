@@ -30,6 +30,7 @@ With `Telescope neorg search_headings` you can search through all the headings i
 ![search_headings](https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png)
 
 ## Gtd Pickers
+### Those pickers are all broken since gtd was removed in core
 
 ### Find Project Tasks
 Use `Telescope neorg find_project_tasks` to pick a project and then the tasks inside it.
