@@ -8,7 +8,7 @@ The command for this is `Telescope neorg find_linkable`
 
 <details>
 <summary>Demo</summary>
-![find_linkable](https://user-images.githubusercontent.com/81827001/153651560-ed0849ec-87c1-4932-81e4-f0188ba8b676.png)
+<img alt="find_linkable" src="https://user-images.githubusercontent.com/81827001/153651560-ed0849ec-87c1-4932-81e4-f0188ba8b676.png">
 </details>
 
 ### Automatic Link Insertion
@@ -18,7 +18,7 @@ Simply press a key (`<C-l>` in insert mode by default) and select what you want 
 
 <details>
 <summary>Demo</summary>
-![insert_link](https://user-images.githubusercontent.com/81827001/153646764-650e3c7a-caa8-43e1-aae6-47a3a3290969.png)
+<img alt="insert_link" src="https://user-images.githubusercontent.com/81827001/153646764-650e3c7a-caa8-43e1-aae6-47a3a3290969.png">
 </details>
 
 ### Automatic File Link Insertion
@@ -26,11 +26,11 @@ You can use `Telescope neorg insert_file_link` to insert a link to a neorg file.
 Notice that this only works for files in the current workspace.
 Note: If no file is selected a link to a file with the name of the prompt value
 will be inserted. This file will be created if you use the link with 
-[neorg's hop](https://github.com/nvim-neorg/neorg/wiki/Esupports-Hop)
+<img alt="neorg's hop" src="https://github.com/nvim-neorg/neorg/wiki/Esupports-Hop"/>
 
 <details>
 <summary>Demo</summary>
-![insert_file_link](https://user-images.githubusercontent.com/81827001/153646847-c43aa368-b5b5-44ac-ba00-b3d98454650d.png)
+<img alt="insert_file_link" src="https://user-images.githubusercontent.com/81827001/153646847-c43aa368-b5b5-44ac-ba00-b3d98454650d.png">
 </details>
 
 ### Fuzzy Searching Headings
@@ -38,7 +38,7 @@ With `Telescope neorg search_headings` you can search through all the headings i
 
 <details>
 <summary>Demo</summary>
-![search_headings](https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png)
+<img alt="search_headings" src="https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png">
 </details>
 
 ## Gtd Pickers
@@ -50,19 +50,20 @@ With `Telescope neorg search_headings` you can search through all the headings i
 Use `Telescope neorg find_project_tasks` to pick a project and then the tasks inside it.
 You can then jump to those tasks.
 If you select and empty project (colored gray) then you'll jump to the project.
-![find_project_tasks](https://user-images.githubusercontent.com/81827001/158395250-b4de0f8b-c693-4f55-ae6e-c66f6055f741.mov)
+
+<video alt="find_project_tasks" src="https://user-images.githubusercontent.com/81827001/158395250-b4de0f8b-c693-4f55-ae6e-c66f6055f741.mov"></video>
 
 ### Find Context Tasks
 With `Telescope neorg find_context_tasks` you pick a context and then tasks.
-![find_context_tasks](https://user-images.githubusercontent.com/81827001/158401579-ef8e7d9a-2d84-4e05-8f7d-d1f3815a67ee.mov)
+<video alt="find_context_tasks" src="https://user-images.githubusercontent.com/81827001/158401579-ef8e7d9a-2d84-4e05-8f7d-d1f3815a67ee.mov"></video>
 
 ### Find AOF Tasks
 You can use `Telescope neorg find_aof_tasks` to pick an aof and then search through the tasks of it.
-![find_aof_tasks](https://user-images.githubusercontent.com/81827001/158401242-5d61c18a-ab77-4942-ad31-0e6dede410df.mov)
+<video alt="find_aof_tasks" src="https://user-images.githubusercontent.com/81827001/158401242-5d61c18a-ab77-4942-ad31-0e6dede410df.mov"></video>
 
 ### Find AOF Project Tasks
 When you use `Telescope neorg find_aof_project_tasks` you can pick an area of focus, then a project inside it and last but not least you can search for tasks inside the project.
-![find_aof_project_tasks](https://user-images.githubusercontent.com/81827001/158401841-9ca3a311-bac1-4733-9a6e-6125003d8a38.mov)
+<video alt="find_aof_project_tasks" src="https://user-images.githubusercontent.com/81827001/158401841-9ca3a311-bac1-4733-9a6e-6125003d8a38.mov"></video>
 </details>
 
 # 🔧 Installation
