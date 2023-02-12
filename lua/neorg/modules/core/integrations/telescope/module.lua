@@ -19,6 +19,7 @@ module.load = function()
 
     module.required["core.keybinds"].register_keybinds(module.name, {
         "find_linkable",
+        "find_norg_files",
         "insert_link",
         "insert_file_link",
         "search_headings",
@@ -32,6 +33,7 @@ end
 
 module.public = {
     find_linkable = require("telescope._extensions.neorg.find_linkable"),
+    find_norg_files = require("telescope._extensions.neorg.find_norg_files"),
     insert_link = require("telescope._extensions.neorg.insert_link"),
     insert_file_link = require("telescope._extensions.neorg.insert_file_link"),
     search_headings = require("telescope._extensions.neorg.search_headings"),
@@ -45,6 +47,8 @@ module.public = {
 module.on_event = function(event)
     if event.split_type[2] == "core.integrations.telescope.find_linkable" then
         module.public.find_linkable()
+    elseif event.split_type[2] == "core.integrations.telescope.find_norg_files" then
+        module.public.find_norg_files()
     elseif event.split_type[2] == "core.integrations.telescope.insert_link" then
         module.public.insert_link()
     elseif event.split_type[2] == "core.integrations.telescope.insert_file_link" then
@@ -67,6 +71,7 @@ end
 module.events.subscribed = {
     ["core.keybinds"] = {
         ["core.integrations.telescope.find_linkable"] = true,
+        ["core.integrations.telescope.find_norg_files"] = true,
         ["core.integrations.telescope.insert_link"] = true,
         ["core.integrations.telescope.insert_file_link"] = true,
         ["core.integrations.telescope.search_headings"] = true,
