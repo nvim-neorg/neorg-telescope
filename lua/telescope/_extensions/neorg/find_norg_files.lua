@@ -18,6 +18,9 @@ local function get_norg_files()
     local current_workspace = dirman.get_current_workspace()
 
     local norg_files = dirman.get_norg_files(current_workspace[1])
+    for i, file in pairs(norg_files) do
+      norg_files[i] = current_workspace[2] .. "/" .. file
+    end
 
     return { current_workspace[2], norg_files }
 end
