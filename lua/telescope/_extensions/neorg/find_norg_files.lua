@@ -39,6 +39,7 @@ return function(opts)
             cwd = files[1],
             finder = finders.new_table({
                 results = files[2],
+                entry_maker = make_entry.gen_from_file({ cwd = files[1] }),
             }),
             previewer = conf.file_previewer(opts),
             sorter = conf.file_sorter(opts),
