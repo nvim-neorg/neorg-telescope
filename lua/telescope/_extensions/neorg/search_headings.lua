@@ -25,6 +25,7 @@ return function(options)
                 prompt_position = "top",
             },
         })
+    opts.bufnr = bufnr
 
     local lines_with_numbers = {}
     local lines = vim.api.nvim_buf_get_lines(0, 0, -1, true)
@@ -49,7 +50,8 @@ return function(options)
     local _, ts_configs = pcall(require, "nvim-treesitter.configs")
 
     local parser_ok, parser = pcall(vim.treesitter.get_parser, opts.bufnr, filetype)
-    local query_ok, query = pcall(vim.treesitter.get_query, filetype, "highlights")
+    local query_ok, query =
+        pcall(vim.treesitter.query.get and vim.treesitter.query.get or vim.treesitter.get_query, filetype, "highlights")
     if parser_ok and query_ok and ts_ok and ts_configs.is_enabled("highlight", filetype, opts.bufnr) then
         local root = parser:parse()[1]:root()
 
