@@ -12,7 +12,7 @@ assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first
 --- Get a list of all norg files in current workspace. Returns { workspace_path, norg_files }
 --- @return table
 local function get_norg_files()
-    local dirman = neorg.modules.get_module("core.norg.dirman")
+    local dirman = neorg.modules.get_module("core.dirman")
 
     if not dirman then
         return nil
@@ -29,7 +29,7 @@ end
 --- @return table
 local function generate_links()
     local res = {}
-    local dirman = neorg.modules.get_module("core.norg.dirman")
+    local dirman = neorg.modules.get_module("core.dirman")
 
     if not dirman then
         return nil
