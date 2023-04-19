@@ -3,7 +3,7 @@ local neorg_loaded, _ = pcall(require, "neorg.modules")
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 
 local function get_current_workspace()
-	local dirman = neorg.modules.get_module("core.norg.dirman")
+	local dirman = neorg.modules.get_module("core.dirman")
 
 	if dirman then
 		local current_workspace = dirman.get_current_workspace()[2]

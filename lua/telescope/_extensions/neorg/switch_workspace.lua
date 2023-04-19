@@ -21,7 +21,7 @@ return function(options)
     if not workspaces then
         workspaces = {}
 
-        local workspaces_raw = neorg.modules.get_module("core.norg.dirman").get_workspaces()
+        local workspaces_raw = neorg.modules.get_module("core.dirman").get_workspaces()
         for name, path in pairs(workspaces_raw) do
             table.insert(workspaces, { name = name, path = path })
         end
@@ -57,7 +57,7 @@ return function(options)
                 table.insert(lines, "Path:")
                 table.insert(lines, workspace.path)
                 table.insert(lines, "Files:")
-                local files = neorg.modules.get_module("core.norg.dirman").get_norg_files(workspace.name)
+                local files = neorg.modules.get_module("core.dirman").get_norg_files(workspace.name)
                 for _, file in ipairs(files) do
                     table.insert(lines, file)
                 end
@@ -71,7 +71,7 @@ return function(options)
                 local entry = state.get_selected_entry()
                 actions.close(prompt_bufnr)
                 if entry then
-                    neorg.modules.get_module("core.norg.dirman").open_workspace(entry.value.name)
+                    neorg.modules.get_module("core.dirman").open_workspace(entry.value.name)
                 end
             end)
             return true

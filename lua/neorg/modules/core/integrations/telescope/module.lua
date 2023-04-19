@@ -7,7 +7,7 @@ require("neorg.modules.base")
 local module = neorg.modules.create("core.integrations.telescope")
 
 module.setup = function()
-    return { success = true, requires = { "core.keybinds", "core.norg.dirman" } }
+    return { success = true, requires = { "core.keybinds", "core.dirman" } }
 end
 
 module.load = function()
