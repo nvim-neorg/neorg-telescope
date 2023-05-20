@@ -52,92 +52,94 @@ utils.pick_project_tasks = function(project)
     local tasks = project_tasks[project.uuid]
     local opts = {}
 
-    pickers.new(opts, {
-        prompt_title = "Pick Project Tasks: " .. project.content,
-        results_title = "Tasks",
-        preview_title = "Task details",
-        finder = finders.new_table({
-            results = tasks,
-            entry_maker = function(entry)
-                local displayer = entry_display.create({
-                    items = {
-                        { width = 100 },
-                    },
-                })
-                local function make_display(ent)
-                    return displayer({
-                        {
-                            entry.content,
-                            function()
-                                return { { { 0, 100 }, utils.states[entry.state][2] } }
-                            end,
+    pickers
+        .new(opts, {
+            prompt_title = "Pick Project Tasks: " .. project.content,
+            results_title = "Tasks",
+            preview_title = "Task details",
+            finder = finders.new_table({
+                results = tasks,
+                entry_maker = function(entry)
+                    local displayer = entry_display.create({
+                        items = {
+                            { width = 100 },
                         },
                     })
-                end
+                    local function make_display(ent)
+                        return displayer({
+                            {
+                                entry.content,
+                                function()
+                                    return { { { 0, 100 }, utils.states[entry.state][2] } }
+                                end,
+                            },
+                        })
+                    end
 
-                return {
-                    value = entry,
-                    display = function(tbl)
-                        return make_display(tbl.value)
-                    end,
-                    ordinal = entry.content,
-                }
-            end,
-        }),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local lines = {}
-                local line_nr = 1
-                local special_lines = {}
-                if entry.value.contexts then
-                    table.insert(lines, "Contexts:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    for _, context in ipairs(entry.value.contexts) do
-                        table.insert(lines, context)
+                    return {
+                        value = entry,
+                        display = function(tbl)
+                            return make_display(tbl.value)
+                        end,
+                        ordinal = entry.content,
+                    }
+                end,
+            }),
+            previewer = previewers.new_buffer_previewer({
+                define_preview = function(self, entry, status)
+                    local lines = {}
+                    local line_nr = 1
+                    local special_lines = {}
+                    if entry.value.contexts then
+                        table.insert(lines, "Contexts:")
+                        table.insert(special_lines, line_nr)
+                        line_nr = line_nr + 1
+                        for _, context in ipairs(entry.value.contexts) do
+                            table.insert(lines, context)
+                            line_nr = line_nr + 1
+                        end
+                    end
+                    if entry.value["waiting.for"] then
+                        table.insert(lines, "Waiting for:")
+                        table.insert(special_lines, line_nr)
+                        line_nr = line_nr + 1
+                        for _, waiting_for in ipairs(entry.value["waiting.for"]) do
+                            table.insert(lines, waiting_for)
+                            line_nr = line_nr + 1
+                        end
+                    end
+                    if entry.value["time.start"] then
+                        table.insert(lines, "Time start:")
+                        table.insert(special_lines, line_nr)
+                        line_nr = line_nr + 1
+                        table.insert(lines, entry.value["time.start"][1])
                         line_nr = line_nr + 1
                     end
-                end
-                if entry.value["waiting.for"] then
-                    table.insert(lines, "Waiting for:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    for _, waiting_for in ipairs(entry.value["waiting.for"]) do
-                        table.insert(lines, waiting_for)
+                    if entry.value["time.due"] then
+                        table.insert(lines, "Time due:")
+                        table.insert(special_lines, line_nr)
+                        line_nr = line_nr + 1
+                        table.insert(lines, entry.value["time.due"][1])
                         line_nr = line_nr + 1
                     end
-                end
-                if entry.value["time.start"] then
-                    table.insert(lines, "Time start:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    table.insert(lines, entry.value["time.start"][1])
-                    line_nr = line_nr + 1
-                end
-                if entry.value["time.due"] then
-                    table.insert(lines, "Time due:")
-                    table.insert(special_lines, line_nr)
-                    line_nr = line_nr + 1
-                    table.insert(lines, entry.value["time.due"][1])
-                    line_nr = line_nr + 1
-                end
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
-                for _, line_number in ipairs(special_lines) do
-                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", line_number - 1, 0, -1)
-                end
-            end,
-        }),
+                    vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
+                    for _, line_number in ipairs(special_lines) do
+                        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", line_number - 1, 0, -1)
+                    end
+                end,
+            }),
 
-        sorter = conf.generic_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-            actions_set.select:replace(function()
-                local entry = state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
-            end)
-            return true
-        end,
-    }):find()
+            sorter = conf.generic_sorter(opts),
+            attach_mappings = function(prompt_bufnr)
+                actions_set.select:replace(function()
+                    local entry = state.get_selected_entry()
+                    actions.close(prompt_bufnr)
+                    neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
+                end)
+                return true
+            end,
+        })
+        :find()
 end
 
 --- Gets gtd tasks sorted after project_uuid

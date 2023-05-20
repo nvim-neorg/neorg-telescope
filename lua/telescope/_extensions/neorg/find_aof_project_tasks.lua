@@ -48,72 +48,74 @@ local function pick_projects(aof)
 
     local opts = {}
 
-    pickers.new(opts, {
-        prompt_title = "Pick Neorg Gtd Projects",
-        results_title = "Projects from " .. aof,
-        preview_title = "Tasks inside project",
-        finder = finders.new_table({
-            results = projects_by_aof[aof],
-            entry_maker = function(entry)
-                local displayer = entry_display.create({
-                    items = {
-                        { width = 100 },
-                    },
-                })
-                local function make_display(ent)
-                    return displayer({
-                        {
-                            entry.content,
-                            function()
-                                --- check if there are no tasks in the project
-                                local tasks = get_task_list(ent)
-                                if #tasks == 0 then
-                                    --- If no tasks highlight with "Comment"
-                                    return { { { 0, 100 }, "Comment" } }
-                                    --- Highlight with "Special"
-                                else
-                                    return { { { 0, 100 }, "Special" } }
-                                end
-                            end,
+    pickers
+        .new(opts, {
+            prompt_title = "Pick Neorg Gtd Projects",
+            results_title = "Projects from " .. aof,
+            preview_title = "Tasks inside project",
+            finder = finders.new_table({
+                results = projects_by_aof[aof],
+                entry_maker = function(entry)
+                    local displayer = entry_display.create({
+                        items = {
+                            { width = 100 },
                         },
                     })
-                end
+                    local function make_display(ent)
+                        return displayer({
+                            {
+                                entry.content,
+                                function()
+                                    --- check if there are no tasks in the project
+                                    local tasks = get_task_list(ent)
+                                    if #tasks == 0 then
+                                        --- If no tasks highlight with "Comment"
+                                        return { { { 0, 100 }, "Comment" } }
+                                    --- Highlight with "Special"
+                                    else
+                                        return { { { 0, 100 }, "Special" } }
+                                    end
+                                end,
+                            },
+                        })
+                    end
 
-                return {
-                    value = entry,
-                    display = function(tbl)
-                        return make_display(tbl.value)
-                    end,
-                    ordinal = entry.content,
-                }
-            end,
-        }),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local tasks, highlights = get_task_list(entry.value)
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, tasks)
-                vim.bo[self.state.bufnr].filetype = "norg"
-                for i, highlight in ipairs(highlights) do
-                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, highlight, i - 1, 0, 5)
-                end
-            end,
-        }),
-        sorter = conf.generic_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-            actions_set.select:replace(function()
-                local entry = state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                local tasks = get_task_list(entry.value)
-                if #tasks == 0 then
-                    neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
-                    return true
-                end
+                    return {
+                        value = entry,
+                        display = function(tbl)
+                            return make_display(tbl.value)
+                        end,
+                        ordinal = entry.content,
+                    }
+                end,
+            }),
+            previewer = previewers.new_buffer_previewer({
+                define_preview = function(self, entry, status)
+                    local tasks, highlights = get_task_list(entry.value)
+                    vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, tasks)
+                    vim.bo[self.state.bufnr].filetype = "norg"
+                    for i, highlight in ipairs(highlights) do
+                        vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, highlight, i - 1, 0, 5)
+                    end
+                end,
+            }),
+            sorter = conf.generic_sorter(opts),
+            attach_mappings = function(prompt_bufnr)
+                actions_set.select:replace(function()
+                    local entry = state.get_selected_entry()
+                    actions.close(prompt_bufnr)
+                    local tasks = get_task_list(entry.value)
+                    if #tasks == 0 then
+                        neorg.modules.get_module("core.gtd.ui").callbacks.goto_task_function(entry.value)
+                        return true
+                    end
 
-                utils.pick_project_tasks(entry.value)
-            end)
-            return true
-        end,
-    }):find()
+                    utils.pick_project_tasks(entry.value)
+                end)
+                return true
+            end,
+        })
+        :find()
 end
 
 local function get_project_list(aof)
@@ -129,64 +131,66 @@ end
 return function(opts)
     opts = opts or {}
 
-    pickers.new(opts, {
-        prompt_title = "Pick Area Of Focus",
-        results_title = "AOFs",
-        preview_title = "Projects inside AOF",
-        finder = finders.new_table({
-            results = get_aofs(),
-            entry_maker = function(entry)
-                local displayer = entry_display.create({
-                    items = {
-                        { width = 100 },
-                    },
-                })
-                local function make_display(ent)
-                    local display = ent.value
-                    if ent.value == "_" then
-                        display = "Projects without an aof"
-                    end
-                    return displayer({
-                        {
-                            display,
-                            function()
-                                --- check if there are no tasks in the project
-                                local aof_projects = get_aof_projects()
-                                if #aof_projects[ent.value] == 0 then
-                                    --- If no tasks highlight with "Comment"
-                                    return { { { 0, 100 }, "Comment" } }
-                                    --- Highlight with "Special"
-                                else
-                                    return { { { 0, 100 }, "Special" } }
-                                end
-                            end,
+    pickers
+        .new(opts, {
+            prompt_title = "Pick Area Of Focus",
+            results_title = "AOFs",
+            preview_title = "Projects inside AOF",
+            finder = finders.new_table({
+                results = get_aofs(),
+                entry_maker = function(entry)
+                    local displayer = entry_display.create({
+                        items = {
+                            { width = 100 },
                         },
                     })
-                end
+                    local function make_display(ent)
+                        local display = ent.value
+                        if ent.value == "_" then
+                            display = "Projects without an aof"
+                        end
+                        return displayer({
+                            {
+                                display,
+                                function()
+                                    --- check if there are no tasks in the project
+                                    local aof_projects = get_aof_projects()
+                                    if #aof_projects[ent.value] == 0 then
+                                        --- If no tasks highlight with "Comment"
+                                        return { { { 0, 100 }, "Comment" } }
+                                    --- Highlight with "Special"
+                                    else
+                                        return { { { 0, 100 }, "Special" } }
+                                    end
+                                end,
+                            },
+                        })
+                    end
 
-                return {
-                    value = entry,
-                    display = make_display,
-                    ordinal = entry,
-                }
-            end,
-        }),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local projects_preview = get_project_list(entry.value)
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, projects_preview)
-                vim.bo[self.state.bufnr].filetype = "norg"
-            end,
-        }),
-        sorter = conf.generic_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-            actions_set.select:replace(function()
-                local entry = state.get_selected_entry()
-                actions.close(prompt_bufnr)
+                    return {
+                        value = entry,
+                        display = make_display,
+                        ordinal = entry,
+                    }
+                end,
+            }),
+            previewer = previewers.new_buffer_previewer({
+                define_preview = function(self, entry, status)
+                    local projects_preview = get_project_list(entry.value)
+                    vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, projects_preview)
+                    vim.bo[self.state.bufnr].filetype = "norg"
+                end,
+            }),
+            sorter = conf.generic_sorter(opts),
+            attach_mappings = function(prompt_bufnr)
+                actions_set.select:replace(function()
+                    local entry = state.get_selected_entry()
+                    actions.close(prompt_bufnr)
 
-                pick_projects(entry.value)
-            end)
-            return true
-        end,
-    }):find()
+                    pick_projects(entry.value)
+                end)
+                return true
+            end,
+        })
+        :find()
 end

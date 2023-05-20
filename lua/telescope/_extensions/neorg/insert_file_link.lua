@@ -1,6 +1,6 @@
 local actions = require("telescope.actions")
 local actions_set = require("telescope.actions.set")
-local state = require('telescope.actions.state')
+local state = require("telescope.actions.state")
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
@@ -46,8 +46,8 @@ local function generate_links()
         local bufnr = dirman.get_file_bufnr(full_path_file)
 
         if vim.api.nvim_get_current_buf() ~= bufnr then
-          local links = {file = file}
-          table.insert(res, links)
+            local links = { file = file }
+            table.insert(res, links)
         end
     end
 
@@ -57,54 +57,46 @@ end
 return function(opts)
     opts = opts or {}
 
-    pickers.new(opts, {
-        prompt_title = "Insert Link to Neorg File",
-        results_title = "Linkables",
-        finder = finders.new_table({
-            results = generate_links(),
-            entry_maker = function(entry)
-                return {
-                    value = entry,
-                    display = entry.file,
-                    ordinal = entry.file,
-                }
+    pickers
+        .new(opts, {
+            prompt_title = "Insert Link to Neorg File",
+            results_title = "Linkables",
+            finder = finders.new_table({
+                results = generate_links(),
+                entry_maker = function(entry)
+                    return {
+                        value = entry,
+                        display = entry.file,
+                        ordinal = entry.file,
+                    }
+                end,
+            }),
+            -- I couldn't get syntax highlight to work with this :(
+            previewer = nil,
+            sorter = conf.generic_sorter(opts),
+            attach_mappings = function(prompt_bufnr)
+                actions_set.select:replace(function()
+                    local entry = state.get_selected_entry()
+
+                    local path_no_extension
+
+                    if entry then
+                        path_no_extension, _ = entry.value.file:gsub("%.norg$", "")
+                    else
+                        path_no_extension = state.get_current_line()
+                    end
+
+                    actions.close(prompt_bufnr)
+
+                    local file_name, _ = path_no_extension:gsub(".*%/", "")
+
+                    vim.api.nvim_put({
+                        "{" .. ":$/" .. path_no_extension .. ":" .. "}" .. "[" .. file_name .. "]",
+                    }, "c", false, true)
+                    vim.api.nvim_feedkeys("hf]a", "t", false)
+                end)
+                return true
             end,
-        }),
-        -- I couldn't get syntax highlight to work with this :(
-        previewer = nil,
-        sorter = conf.generic_sorter(opts),
-        attach_mappings = function(prompt_bufnr)
-            actions_set.select:replace(function()
-                local entry = state.get_selected_entry()
-
-                local path_no_extension
-
-                if entry then
-                  path_no_extension, _ = entry.value.file:gsub("%.norg$", "")
-                else
-                  path_no_extension = state.get_current_line()
-                end
-
-                actions.close(prompt_bufnr)
-
-                local file_name, _ = path_no_extension:gsub(".*%/", "")
-
-                vim.api.nvim_put(
-                    {
-                        "{"
-                            .. ":$/" .. path_no_extension .. ":"
-                            .. "}"
-                            .. "["
-                            .. file_name
-                            .. "]",
-                    },
-                    "c",
-                    false,
-                    true
-                )
-                vim.api.nvim_feedkeys("hf]a", "t", false)
-            end)
-            return true
-        end,
-    }):find()
+        })
+        :find()
 end

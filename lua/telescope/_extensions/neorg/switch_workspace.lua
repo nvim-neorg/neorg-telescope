@@ -35,46 +35,48 @@ return function(options)
             },
         })
 
-    pickers.new(opts, {
-        prompt_title = "Switch Workspace",
-        preview_title = "Details",
-        results_title = "Workspaces",
-        finder = finders.new_table({
-            results = workspaces,
-            entry_maker = function(ws)
-                return {
-                    value = ws,
-                    display = ws.name,
-                    ordinal = ws.name,
-                }
+    pickers
+        .new(opts, {
+            prompt_title = "Switch Workspace",
+            preview_title = "Details",
+            results_title = "Workspaces",
+            finder = finders.new_table({
+                results = workspaces,
+                entry_maker = function(ws)
+                    return {
+                        value = ws,
+                        display = ws.name,
+                        ordinal = ws.name,
+                    }
+                end,
+            }),
+            sorter = conf.generic_sorter(opts),
+            previewer = previewers.new_buffer_previewer({
+                define_preview = function(self, entry, status)
+                    local workspace = entry.value
+                    local lines = {}
+                    table.insert(lines, "Path:")
+                    table.insert(lines, workspace.path)
+                    table.insert(lines, "Files:")
+                    local files = neorg.modules.get_module("core.dirman").get_norg_files(workspace.name)
+                    for _, file in ipairs(files) do
+                        table.insert(lines, file)
+                    end
+                    vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
+                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 0, 0, -1)
+                    vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 2, 0, -1)
+                end,
+            }),
+            attach_mappings = function(prompt_bufnr)
+                action_set.select:replace(function()
+                    local entry = state.get_selected_entry()
+                    actions.close(prompt_bufnr)
+                    if entry then
+                        neorg.modules.get_module("core.dirman").open_workspace(entry.value.name)
+                    end
+                end)
+                return true
             end,
-        }),
-        sorter = conf.generic_sorter(opts),
-        previewer = previewers.new_buffer_previewer({
-            define_preview = function(self, entry, status)
-                local workspace = entry.value
-                local lines = {}
-                table.insert(lines, "Path:")
-                table.insert(lines, workspace.path)
-                table.insert(lines, "Files:")
-                local files = neorg.modules.get_module("core.dirman").get_norg_files(workspace.name)
-                for _, file in ipairs(files) do
-                    table.insert(lines, file)
-                end
-                vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
-                vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 0, 0, -1)
-                vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 2, 0, -1)
-            end,
-        }),
-        attach_mappings = function(prompt_bufnr)
-            action_set.select:replace(function()
-                local entry = state.get_selected_entry()
-                actions.close(prompt_bufnr)
-                if entry then
-                    neorg.modules.get_module("core.dirman").open_workspace(entry.value.name)
-                end
-            end)
-            return true
-        end,
-    }):find()
+        })
+        :find()
 end
