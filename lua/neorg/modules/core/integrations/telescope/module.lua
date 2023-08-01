@@ -2,7 +2,7 @@
 	A Neorg module designed to integrate telescope.nvim
 --]]
 
-require("neorg.modules.base")
+local neorg = require("neorg.core")
 
 local module = neorg.modules.create("core.integrations.telescope")
 

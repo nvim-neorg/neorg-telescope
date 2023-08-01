@@ -1,4 +1,4 @@
-local neorg_loaded, _ = pcall(require, "neorg.modules")
+local neorg_loaded, neorg = pcall(require, "neorg.core")
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values -- allows us to use the values from the users config

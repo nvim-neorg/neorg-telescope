@@ -7,7 +7,7 @@ local pickers = require("telescope.pickers")
 local conf = require("telescope.config").values
 local make_entry = require("telescope.make_entry")
 
-local neorg_loaded, _ = pcall(require, "neorg.modules")
+local neorg_loaded, neorg = pcall(require, "neorg.core")
 
 assert(neorg_loaded, "Neorg is not loaded - please make sure to load Neorg first")
 

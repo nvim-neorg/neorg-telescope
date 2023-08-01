@@ -10,6 +10,7 @@ local actions_set = require("telescope.actions.set")
 local conf = require("telescope.config").values
 
 local ns = vim.api.nvim_create_namespace("neorg-gtd-picker")
+local neorg = require("neorg.core")
 
 --- Neorg task states: `["<task-state>"] = { "- [<sth>] ",<highlight>}`
 utils.states = {
