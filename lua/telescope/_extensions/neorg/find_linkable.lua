@@ -15,18 +15,25 @@ local function get_current_workspace()
 end
 
 return function(opts)
-    opts = opts or {}
-
     local current_workspace = get_current_workspace()
-
     if not current_workspace then
         return
     end
 
-    require("telescope.builtin").grep_string({
-        search = "^\\s*(\\*+|\\|{1,2}|\\${1,2})\\s+",
-        use_regex = true,
-        search_dirs = { current_workspace },
-        prompt_title = "Find in Norg files",
-    })
+    local utils = require("telescope._extensions.neorg.utils")
+    local pickers = require "telescope.pickers"
+    local conf = require("telescope.config").values
+    local make_entry = require "telescope.make_entry"
+
+    local search = "^\\s*(\\*+|\\|{1,2}|\\${1,2})\\s+"
+
+    opts = utils.copy_table(opts or {})
+    opts.prompt_title = opts.prompt_title or "Find in Norg files"
+    opts.entry_maker = opts.entry_maker or make_entry.gen_from_vimgrep(opts)
+
+    pickers.new(opts, {
+        finder = utils.new_norg_finder(search, current_workspace, opts),
+        previewer = utils.new_norg_previewer(),
+        sorter = conf.generic_sorter(opts),
+    }):find()
 end
