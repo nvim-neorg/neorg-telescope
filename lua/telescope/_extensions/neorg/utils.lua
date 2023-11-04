@@ -6,13 +6,13 @@ local ns_previewer = vim.api.nvim_create_namespace("telescope.neorg.previewers")
 
 local utils = {}
 
-utils.copy_table = function(table)
+function utils.copy_table(table)
     return vim.tbl_map(function(value)
         return value
     end, table)
 end
 
-utils.new_norg_finder = function(search, directory, opts)
+function utils.new_norg_finder(search, directory, opts)
     local command_list = vim.tbl_flatten({
         conf.vimgrep_arguments,
         "-g", "*.norg",
@@ -23,7 +23,7 @@ utils.new_norg_finder = function(search, directory, opts)
     return finders.new_oneshot_job(command_list, opts)
 end
 
-utils.new_norg_previewer = function()
+function utils.new_norg_previewer()
     return previewers.new_buffer_previewer({
         define_preview = function(self, entry, status)
             local jump_to_line = function(self, bufnr, lnum)
