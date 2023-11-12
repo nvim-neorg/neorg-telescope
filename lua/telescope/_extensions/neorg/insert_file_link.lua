@@ -41,14 +41,27 @@ local function generate_links()
         return
     end
 
+    local ts = neorg.modules.get_module("core.integrations.treesitter")
+
     for _, file in pairs(files[2]) do
         local bufnr = dirman.get_file_bufnr(file)
+
+        local title = nil
+        local title_display = ""
+        if ts then
+            local metadata = ts.get_document_metadata(bufnr)
+            if metadata and metadata.title then
+                title = metadata.title
+                title_display = " [" .. title .. "]"
+            end
+        end
 
         if vim.api.nvim_get_current_buf() ~= bufnr then
             local links = {
                 file = file,
-                display = "$" .. file:sub(#files[1] + 1, -1),
+                display = "$" .. file:sub(#files[1] + 1, -1) .. title_display,
                 relative = file:sub(#files[1] + 1, -1):sub(0, -6),
+                title = title,
             }
             table.insert(res, links)
         end
@@ -72,6 +85,7 @@ return function(opts)
                         display = entry.display,
                         ordinal = entry.display,
                         relative = entry.relative,
+                        title = entry.title,
                     }
                 end,
             }),
@@ -95,7 +109,7 @@ return function(opts)
                     local file_name, _ = path_no_extension:gsub(".*%/", "")
 
                     vim.api.nvim_put({
-                        "{" .. ":$" .. entry.relative .. ":" .. "}" .. "[" .. file_name .. "]",
+                        "{" .. ":$" .. entry.relative .. ":" .. "}" .. "[" .. (entry.title or file_name) .. "]",
                     }, "c", false, true)
                     vim.api.nvim_feedkeys("hf]a", "t", false)
                 end)
