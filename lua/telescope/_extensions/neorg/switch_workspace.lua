@@ -7,7 +7,6 @@ local action_set = require("telescope.actions.set")
 local action_state = require("telescope.actions.state")
 local state = require("telescope.actions.state")
 local conf = require("telescope.config").values
-local previewers = require("telescope.previewers")
 
 local neorg_loaded, neorg = pcall(require, "neorg.core")
 
