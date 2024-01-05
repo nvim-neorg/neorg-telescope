@@ -66,6 +66,19 @@ When you use `Telescope neorg find_aof_project_tasks` you can pick an area of fo
 <video alt="find_aof_project_tasks" src="https://user-images.githubusercontent.com/81827001/158401841-9ca3a311-bac1-4733-9a6e-6125003d8a38.mov"></video>
 </details>
 
+Until the new GTD infrastructure arrives, you could collect all your todo items with a regex, for example:
+
+```lua
+function get_todos(dir, states)
+     require('telescope.builtin').live_grep{cwd=dir}
+     vim.fn.feedkeys('^ *([*]+|[-]+) *[(]' .. states .. '[)]')
+end
+
+-- You can now use `:lua get_todos('~/notes', '[^x]')` to get all todo items inside directory '~/notes' that are not yet done.
+-- Or, to bind it to a key, like ctrl_t:
+vim.keymap.set('n', '<c-t>', function() get_todos('~/notes', '[^x]') end)
+```
+
 # 🔧 Installation
 First, make sure to pull this plugin down. This plugin does not run any code in of itself. It requires Neorg
 to load it first:
