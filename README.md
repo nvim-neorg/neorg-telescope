@@ -75,9 +75,9 @@ function get_todos(dir, states)
      vim.fn.feedkeys('^ *([*]+|[-]+) *[(]' .. states .. '[)]')
 end
 
--- You can now use `:lua get_todos('~/notes', '[^x]')` to get all todo items inside directory '~/notes' that are not yet done.
+-- You can now use `:lua get_todos('~/notes', '[^x_]')` to get all todo items inside directory '~/notes' that are not yet done or cancelled.
 -- Or, to bind it to a key, like ctrl_t:
-vim.keymap.set('n', '<c-t>', function() get_todos('~/notes', '[^x]') end)
+vim.keymap.set('n', '<c-t>', function() get_todos('~/notes', '[^x_]') end)
 ```
 
 # 🔧 Installation
