@@ -69,6 +69,7 @@ When you use `Telescope neorg find_aof_project_tasks` you can pick an area of fo
 Until the new GTD infrastructure arrives, you could collect all your todo items with a regex, for example:
 
 ```lua
+-- Add the following function to your `~/.config/nvim/init.lua`:
 function get_todos(dir, states)
      require('telescope.builtin').live_grep{cwd=dir}
      vim.fn.feedkeys('^ *([*]+|[-]+) *[(]' .. states .. '[)]')
