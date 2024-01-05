@@ -72,7 +72,7 @@ Until the new GTD infrastructure arrives, you could collect all your todo items 
 -- Add the following function to your `~/.config/nvim/init.lua`:
 function get_todos(dir, states)
      require('telescope.builtin').live_grep{cwd=dir}
-     vim.fn.feedkeys('^ *([*]+|[-]+) *[(]' .. states .. '[)]')
+     vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
 end
 
 -- You can now use `:lua get_todos('~/notes', '[^x_]')` to get all todo items inside directory '~/notes' that are not yet done or cancelled.
