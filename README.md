@@ -69,14 +69,21 @@ When you use `Telescope neorg find_aof_project_tasks` you can pick an area of fo
 Until the new GTD infrastructure arrives, you could collect all your todo items with a regex, for example:
 
 ```lua
+-- Make sure you have ripgrep installed.
 -- Add the following function to your `~/.config/nvim/init.lua`:
-local function get_todos(dir, states)
-     require('telescope.builtin').live_grep{ cwd = dir }
-     vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
-end
+do
+    local _, neorg = pcall(require, "neorg.core")
+    local dirman = neorg.modules.get_module("core.dirman")
+    local current_workspace = dirman.get_current_workspace()
+    local dir = current_workspace[2]
+    local function get_todos(dir, states)
+        require('telescope.builtin').live_grep{ cwd = dir }
+        vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
+    end
 
--- This can be bound to a key
-vim.keymap.set('n', '<c-t>', function() get_todos('~/notes', '[^x_]') end)
+    -- This can be bound to a key
+    vim.keymap.set('n', '<c-t>', function() get_todos('~/notes', '[^x_]') end)
+end
 ```
 
 # 🔧 Installation
