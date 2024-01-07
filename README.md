@@ -74,9 +74,9 @@ Until the new GTD infrastructure arrives, you could collect all your todo items 
 do
     local _, neorg = pcall(require, "neorg.core")
     local dirman = neorg.modules.get_module("core.dirman")
-    local current_workspace = dirman.get_current_workspace()
-    local dir = current_workspace[2]
     local function get_todos(dir, states)
+        local current_workspace = dirman.get_current_workspace()
+        local dir = current_workspace[2]
         require('telescope.builtin').live_grep{ cwd = dir }
         vim.fn.feedkeys('^ *([*]+|[-]+) +[(]' .. states .. '[)]')
     end
