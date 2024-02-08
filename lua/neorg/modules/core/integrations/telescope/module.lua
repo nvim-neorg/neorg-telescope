@@ -28,6 +28,8 @@ module.load = function()
         "find_aof_tasks",
         "find_context_tasks",
         "switch_workspace",
+        "find_backlinks",
+        "find_header_backlinks",
     })
 end
 
@@ -42,6 +44,8 @@ module.public = {
     find_aof_tasks = require("telescope._extensions.neorg.find_aof_tasks"),
     find_aof_project_tasks = require("telescope._extensions.neorg.find_aof_project_tasks"),
     switch_workspace = require("telescope._extensions.neorg.switch_workspace"),
+    find_backlinks = require("telescope._extensions.neorg.backlinks.file_backlinks"),
+    find_header_backlinks = require("telescope._extensions.neorg.backlinks.header_backlinks"),
 }
 
 module.on_event = function(event)
@@ -65,6 +69,10 @@ module.on_event = function(event)
         module.public.find_context_tasks()
     elseif event.split_type[2] == "core.integrations.telescope.switch_workspace" then
         module.public.switch_workspace()
+    elseif event.split_type[2] == "core.integrations.telescope.find_backlinks" then
+        module.public.find_backlinks()
+    elseif event.split_type[2] == "core.integrations.telescope.find_header_backlinks" then
+        module.public.find_header_backlinks()
     end
 end
 
@@ -80,6 +88,8 @@ module.events.subscribed = {
         ["core.integrations.telescope.find_aof_tasks"] = true,
         ["core.integrations.telescope.find_aof_project_tasks"] = true,
         ["core.integrations.telescope.switch_workspace"] = true,
+        ["core.integrations.telescope.find_backlinks"] = true,
+        ["core.integrations.telescope.find_header_backlinks"] = true,
     },
 }
 
