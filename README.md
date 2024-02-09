@@ -41,6 +41,21 @@ With `Telescope neorg search_headings` you can search through all the headings i
 <img alt="search_headings" src="https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png">
 </details>
 
+### Search File and Heading Backlinks
+These are limited to workspace relative links (ie.
+`{:$/worspace/relative/path:}`) for the sake of simplicity. Both exact
+(`{:$/path:** lvl 2 heading}`) and fuzzy (`{:$/path:# heading}`) links are
+found.
+
+<details>
+  <summary>Demo</summary>
+
+![search backlink](https://github.com/benlubas/neorg-telescope/assets/56943754/1332f319-cf43-4a5b-902a-f2bbe4ea14e3)
+
+</details>
+
+
+
 ## Gtd Pickers
 ### Those pickers are all broken since gtd was removed in core
 <details>
