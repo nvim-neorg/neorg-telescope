@@ -1,4 +1,4 @@
----produce the rg regular expression used to find workspace relative paths to the given file.
+---produce the regular expression used to find workspace relative paths to the given file.
 ---Optionally takes a header that should exist in the current file
 ---@param workspace_path string "/abs/path/to/workspace"
 ---@param current_file string "test.norg"
@@ -21,4 +21,3 @@ return function(workspace_path, current_file, heading)
     heading_text = heading_text:gsub("^%(.%)%s?", "")
     return ([[\{:\$/%s:(#|%s) %s\}]]):format(current_file, heading_prefix, heading_text) -- {:$/workspace_path:(# heading or ** heading)}
 end
-

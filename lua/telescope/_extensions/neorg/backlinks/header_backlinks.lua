@@ -16,9 +16,7 @@ local function get_current_workspace()
     return nil
 end
 
-return function(opts)
-    opts = opts or {}
-
+return function()
     local current_workspace = get_current_workspace()
 
     if not current_workspace then
@@ -50,6 +48,6 @@ return function(opts)
         search = file_backlink_regex(current_workspace, current_file, heading),
         use_regex = true,
         search_dirs = { current_workspace },
-        prompt_title = "Backlinks to " .. heading,
+        prompt_title = "Header Backlinks (" .. heading .. ")",
     })
 end
