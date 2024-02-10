@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/nvim-neorg/neorg-telescope/compare/v1.0.0...v1.1.0) (2024-02-10)
+
+
+### Features
+
+* ws relative file/header backlink pickers ([#50](https://github.com/nvim-neorg/neorg-telescope/issues/50)) ([418f8fd](https://github.com/nvim-neorg/neorg-telescope/commit/418f8fd4bd7360d954613a2322b4eb2888ac3ad9))
+
 ## 1.0.0 (2023-08-06)
 
 
