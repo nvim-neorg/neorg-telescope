@@ -41,6 +41,21 @@ With `Telescope neorg search_headings` you can search through all the headings i
 <img alt="search_headings" src="https://user-images.githubusercontent.com/81827001/153647155-80f5579f-acc9-489e-9e05-acf31a646bba.png">
 </details>
 
+### Search File and Heading Backlinks
+- `Telescope neorg find_backlinks` - find every line in your workspace that links^* to the current file
+- `Telescope neorg find_header_backlinks` - same but with links to the current file _and_ heading
+
+These are limited to workspace relative links (ie.
+`{:$/worspace/relative/path:}`) for the sake of simplicity. Both exact
+(`{:$/path:** lvl 2 heading}`) and fuzzy (`{:$/path:# heading}`) links are
+found.
+
+<details>
+  <summary>Demo</summary>
+
+![search backlink](https://github.com/nvim-neorg/neorg-telescope/assets/56943754/37a5b68f-29b3-43ae-a679-9656cfa646db)
+</details>
+
 ## Gtd Pickers
 ### Those pickers are all broken since gtd was removed in core
 <details>

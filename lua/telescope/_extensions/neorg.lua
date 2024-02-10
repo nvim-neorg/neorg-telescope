@@ -10,5 +10,7 @@ return require("telescope").register_extension({
         find_aof_tasks = require("neorg.modules.core.integrations.telescope.module").public.find_aof_tasks,
         find_aof_project_tasks = require("neorg.modules.core.integrations.telescope.module").public.find_aof_project_tasks,
         switch_workspace = require("neorg.modules.core.integrations.telescope.module").public.switch_workspace,
+        find_backlinks = require("neorg.modules.core.integrations.telescope.module").public.find_backlinks,
+        find_header_backlinks = require("neorg.modules.core.integrations.telescope.module").public.find_header_backlinks,
     },
 })
