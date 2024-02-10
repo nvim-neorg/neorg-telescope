@@ -152,4 +152,15 @@ utils.get_project_tasks = function()
     return projects_tasks
 end
 
+---Gets the full path to the current workspace
+---@return string?
+utils.get_current_workspace = function()
+    local dirman = neorg.modules.get_module("core.dirman")
+    if dirman then
+        local current_workspace = dirman.get_current_workspace()[2]
+        return current_workspace
+    end
+    return nil
+end
+
 return utils
