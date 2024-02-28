@@ -72,6 +72,7 @@ end
 
 return function(opts)
     opts = opts or {}
+    local mode = vim.api.nvim_get_mode().mode
 
     pickers
         .new(opts, {
@@ -110,8 +111,10 @@ return function(opts)
 
                     vim.api.nvim_put({
                         "{" .. ":$" .. entry.relative .. ":" .. "}" .. "[" .. (entry.title or file_name) .. "]",
-                    }, "c", false, true)
-                    vim.api.nvim_feedkeys("hf]a", "t", false)
+                    }, "c", true, true)
+                    if mode == "i" then
+                        vim.api.nvim_feedkeys("a", "n", false)
+                    end
                 end)
                 return true
             end,
