@@ -43,6 +43,8 @@ local function generate_links()
 
     local ts = neorg.modules.get_module("core.integrations.treesitter")
 
+    local workspace_offset = #tostring(files[1]) + 1
+
     for _, file in pairs(files[2]) do
         local bufnr = dirman.get_file_bufnr(file)
 
@@ -59,8 +61,8 @@ local function generate_links()
         if vim.api.nvim_get_current_buf() ~= bufnr then
             local links = {
                 file = file,
-                display = "$" .. file:sub(#files[1] + 1, -1) .. title_display,
-                relative = file:sub(#files[1] + 1, -1):sub(0, -6),
+                display = "$" .. file:sub(workspace_offset, -1) .. title_display,
+                relative = file:sub(workspace_offset, -1):sub(0, -6),
                 title = title,
             }
             table.insert(res, links)
