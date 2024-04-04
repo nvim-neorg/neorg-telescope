@@ -32,7 +32,7 @@ return function()
     require("telescope.builtin").grep_string({
         search = common.build_backlink_regex(current_workspace, current_file, heading),
         use_regex = true,
-        search_dirs = { current_workspace },
+        search_dirs = { tostring(current_workspace) },
         prompt_title = "Header Backlinks (" .. heading .. ")",
     })
 end
