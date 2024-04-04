@@ -35,7 +35,7 @@ local function get_linkables(bufnr, file, workspace)
 
     local lines
     if file then
-        lines = vim.fn.readfile(file)
+        lines = vim.fn.readfile(tostring(file))
         file = file:gsub(".norg", "")
         file = "$" .. file:sub(#workspace + 1, -1)
     else
