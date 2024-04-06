@@ -12,7 +12,7 @@ return function(opts)
     require("telescope.builtin").grep_string({
         search = "^\\s*(\\*+|\\|{1,2}|\\${1,2})\\s+",
         use_regex = true,
-        search_dirs = { current_workspace:tostring() },
+        search_dirs = { tostring(current_workspace) },
         prompt_title = "Find in Norg files",
     })
 end

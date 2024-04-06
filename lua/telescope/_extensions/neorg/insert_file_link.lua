@@ -40,11 +40,15 @@ local function generate_links()
     if not files[2] then
         return
     end
+    if not (pcall(require, "pathlib")) then
+        error("neorg-telescope Dependency Error: pysan3/pathlib.nvim is a required dependency.")
+    end
 
     local ts = neorg.modules.get_module("core.integrations.treesitter")
 
+    local Path = require("pathlib")
     for _, file in pairs(files[2]) do
-        local bufnr = dirman.get_file_bufnr(file)
+        local bufnr = dirman.get_file_bufnr(tostring(file))
 
         local title = nil
         local title_display = ""
@@ -57,7 +61,8 @@ local function generate_links()
         end
 
         if vim.api.nvim_get_current_buf() ~= bufnr then
-            local relative = file:relative_to(files[1])
+            file = Path(file)
+            local relative = file:relative_to(Path(files[1]))
             local links = {
                 file = file,
                 display = "$/" .. relative .. title_display,
