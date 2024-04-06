@@ -78,6 +78,7 @@ end
 
 return function(opts)
     opts = opts or {}
+    local mode = vim.api.nvim_get_mode().mode
 
     pickers
         .new(opts, {

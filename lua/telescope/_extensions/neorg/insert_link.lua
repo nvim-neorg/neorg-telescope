@@ -101,6 +101,7 @@ end
 return function(opts)
     opts = opts or {}
     local links = generate_links()
+    local mode = vim.api.nvim_get_mode().mode
 
     pickers
         .new(opts, {
@@ -164,16 +165,18 @@ return function(opts)
                                 "[%*#%|_]",
                                 "\\%1"
                             ) .. "}" .. "[" .. entry.linkable:gsub(":$", "") .. "]",
-                        }, "c", false, true)
+                        }, "c", true, true)
                     else
                         vim.api.nvim_put({
                             "{" .. inserted_file .. entry.ordinal:gsub("^(%W+)%s+.+", "%1 ") .. entry.linkable:gsub(
                                 "[%*#%|_]",
                                 "\\%1"
                             ) .. "}",
-                        }, "c", false, true)
+                        }, "c", true, true)
                     end
-                    vim.api.nvim_feedkeys("hf]a", "t", false)
+                    if mode == "i" then
+                        vim.api.nvim_feedkeys("a", "n", false)
+                    end
                 end)
                 return true
             end,
