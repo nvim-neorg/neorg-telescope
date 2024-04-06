@@ -37,7 +37,7 @@ local function get_linkables(bufnr, file, workspace)
     local lines
     if file then
         lines = vim.fn.readfile(file:tostring("/"))
-        file = file:with_suffix("")
+        file = file:remove_suffix(".norg")
         file = "$/" .. file:relative_to(workspace)
     else
         lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)

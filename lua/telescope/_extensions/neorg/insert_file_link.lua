@@ -61,7 +61,7 @@ local function generate_links()
             local links = {
                 file = file,
                 display = "$/" .. relative .. title_display,
-                relative = relative:suffix() == ".norg" and relative:with_suffix("") or relative,
+                relative = relative:remove_suffix(".norg"),
                 title = title,
             }
             table.insert(res, links)
