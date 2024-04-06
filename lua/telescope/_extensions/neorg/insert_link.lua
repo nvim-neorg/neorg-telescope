@@ -28,16 +28,17 @@ end
 
 --- Creates links for a `file` specified by `bufnr`
 --- @param bufnr number
---- @param file string
+--- @param file PathlibPath|nil
+--- @param workspace PathlibPath
 --- @return table
 local function get_linkables(bufnr, file, workspace)
     local ret = {}
 
     local lines
     if file then
-        lines = vim.fn.readfile(file)
-        file = file:gsub(".norg", "")
-        file = "$" .. file:sub(#workspace + 1, -1)
+        lines = vim.fn.readfile(file:tostring("/"))
+        file = file:with_suffix("")
+        file = "$/" .. file:relative_to(workspace)
     else
         lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
     end
@@ -130,7 +131,7 @@ return function(opts)
                         display = make_display,
                         ordinal = entry.display,
                         lnum = entry.line,
-                        file = entry.file,
+                        file = entry.file and tostring(entry.file) or nil,
                         linkable = entry.linkable,
                     }
                 end,

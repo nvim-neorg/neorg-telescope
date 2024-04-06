@@ -57,10 +57,11 @@ local function generate_links()
         end
 
         if vim.api.nvim_get_current_buf() ~= bufnr then
+            local relative = file:relative_to(files[1])
             local links = {
                 file = file,
-                display = "$" .. file:sub(#files[1] + 1, -1) .. title_display,
-                relative = file:sub(#files[1] + 1, -1):sub(0, -6),
+                display = "$/" .. relative .. title_display,
+                relative = relative:suffix() == ".norg" and relative:with_suffix("") or relative,
                 title = title,
             }
             table.insert(res, links)
@@ -96,20 +97,10 @@ return function(opts)
                 actions_set.select:replace(function()
                     local entry = state.get_selected_entry()
 
-                    local path_no_extension
-
-                    if entry then
-                        path_no_extension, _ = entry.value.file:gsub("%.norg$", "")
-                    else
-                        path_no_extension = state.get_current_line()
-                    end
-
                     actions.close(prompt_bufnr)
 
-                    local file_name, _ = path_no_extension:gsub(".*%/", "")
-
                     vim.api.nvim_put({
-                        "{" .. ":$" .. entry.relative .. ":" .. "}" .. "[" .. (entry.title or file_name) .. "]",
+                        "{" .. ":$/" .. entry.relative .. ":" .. "}" .. "[" .. (entry.title or entry.relative) .. "]",
                     }, "c", false, true)
                     vim.api.nvim_feedkeys("hf]a", "t", false)
                 end)

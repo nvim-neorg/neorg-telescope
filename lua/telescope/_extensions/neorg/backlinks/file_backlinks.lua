@@ -13,7 +13,7 @@ return function()
     require("telescope.builtin").grep_string({
         search = common.build_backlink_regex(current_workspace, current_file),
         use_regex = true,
-        search_dirs = { current_workspace },
+        search_dirs = { current_workspace:tostring() },
         prompt_title = "File Backlinks",
     })
 end
