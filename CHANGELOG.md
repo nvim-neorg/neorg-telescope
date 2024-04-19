@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/nvim-neorg/neorg-telescope/compare/v1.0.0...v1.1.0) (2024-04-19)
+
+
+### Features
+
+* ws relative file/header backlink pickers ([#50](https://github.com/nvim-neorg/neorg-telescope/issues/50)) ([418f8fd](https://github.com/nvim-neorg/neorg-telescope/commit/418f8fd4bd7360d954613a2322b4eb2888ac3ad9))
+
+
+### Bug Fixes
+
+* call tostring on paths ([a4fc4eb](https://github.com/nvim-neorg/neorg-telescope/commit/a4fc4eb3cd5db6ccd52e99f2b49ce931c458e38f))
+* call tostring on workspace paths ([ddd63b5](https://github.com/nvim-neorg/neorg-telescope/commit/ddd63b5301aa0d11c140ab99ba22d0a33a69a9a4))
+* cursor behavior on link insertion ([#48](https://github.com/nvim-neorg/neorg-telescope/issues/48)) ([2fb1177](https://github.com/nvim-neorg/neorg-telescope/commit/2fb117727ce91e6ca6209cb1013fb4437bd35722))
+* **pathlib:** work with Pathlib objects from neorg &gt;= v8.3.0 ([#58](https://github.com/nvim-neorg/neorg-telescope/issues/58)) ([749c0b1](https://github.com/nvim-neorg/neorg-telescope/commit/749c0b11a4f7150633de8016a8de21a994238643))
+
 ## 1.0.0 (2023-08-06)
 
 
