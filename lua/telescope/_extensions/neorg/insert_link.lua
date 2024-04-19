@@ -28,16 +28,17 @@ end
 
 --- Creates links for a `file` specified by `bufnr`
 --- @param bufnr number
---- @param file string
+--- @param file PathlibPath|nil
+--- @param workspace PathlibPath
 --- @return table
 local function get_linkables(bufnr, file, workspace)
     local ret = {}
 
     local lines
     if file then
-        lines = vim.fn.readfile(tostring(file))
-        file = file:gsub(".norg", "")
-        file = "$" .. file:sub(#workspace + 1, -1)
+        lines = vim.fn.readfile(file:tostring("/"))
+        file = file:remove_suffix(".norg")
+        file = "$/" .. file:relative_to(workspace)
     else
         lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
     end
@@ -66,12 +67,17 @@ local function generate_links()
     if not dirman then
         return nil
     end
+    if not (pcall(require, "pathlib")) then
+        error("neorg-telescope Dependency Error: pysan3/pathlib.nvim is a required dependency.")
+    end
+
     local current_workspace = dirman.get_current_workspace()
 
     local files = get_norg_files()
 
+    local Path = require("pathlib")
     for _, file in pairs(files[2]) do
-        local bufnr = dirman.get_file_bufnr(file)
+        local bufnr = dirman.get_file_bufnr(tostring(file))
         if not bufnr then
         end
 
@@ -80,11 +86,11 @@ local function generate_links()
             if vim.api.nvim_get_current_buf() == bufnr then
                 return nil
             else
-                return file
+                return Path(file)
             end
         end)()
 
-        local links = get_linkables(bufnr, file_inserted, current_workspace[2])
+        local links = get_linkables(bufnr, file_inserted, Path(current_workspace[2]))
 
         vim.list_extend(res, links)
     end
@@ -131,7 +137,7 @@ return function(opts)
                         display = make_display,
                         ordinal = entry.display,
                         lnum = entry.line,
-                        file = entry.file,
+                        file = entry.file and tostring(entry.file) or nil,
                         linkable = entry.linkable,
                     }
                 end,

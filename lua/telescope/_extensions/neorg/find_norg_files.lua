@@ -19,7 +19,7 @@ local function get_norg_files()
 
     local norg_files = dirman.get_norg_files(current_workspace[1])
 
-    return { current_workspace[2], norg_files }
+    return { current_workspace[2]:tostring(), vim.tbl_map(tostring, norg_files) }
 end
 
 return function(opts)

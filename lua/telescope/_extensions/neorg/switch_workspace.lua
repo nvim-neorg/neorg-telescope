@@ -56,11 +56,11 @@ return function(options)
                     local workspace = entry.value
                     local lines = {}
                     table.insert(lines, "Path:")
-                    table.insert(lines, workspace.path)
+                    table.insert(lines, tostring(workspace.path))
                     table.insert(lines, "Files:")
                     local files = neorg.modules.get_module("core.dirman").get_norg_files(workspace.name)
                     for _, file in ipairs(files) do
-                        table.insert(lines, file)
+                        table.insert(lines, tostring(file))
                     end
                     vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
                     vim.api.nvim_buf_add_highlight(self.state.bufnr, ns, "Special", 0, 0, -1)
