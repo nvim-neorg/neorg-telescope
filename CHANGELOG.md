@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Features
+
+* add configuration option to disable title preview on `insert_file_link`.
+
 ## [1.1.0](https://github.com/nvim-neorg/neorg-telescope/compare/v1.0.0...v1.1.0) (2024-04-19)
 
 

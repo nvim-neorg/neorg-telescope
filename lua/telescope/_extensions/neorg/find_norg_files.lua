@@ -22,27 +22,29 @@ local function get_norg_files()
     return { current_workspace[2]:tostring(), vim.tbl_map(tostring, norg_files) }
 end
 
-return function(opts)
-    opts = opts or {}
+return function(config)
+    return function(opts)
+        opts = opts or {}
 
-    local files = get_norg_files()
+        local files = get_norg_files()
 
-    if not (files and files[2]) then
-        return
+        if not (files and files[2]) then
+            return
+        end
+
+        opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
+
+        pickers
+            .new(opts, {
+                prompt_title = opts.prompt_title or "Find Norg Files",
+                cwd = files[1],
+                finder = finders.new_table({
+                    results = files[2],
+                    entry_maker = make_entry.gen_from_file({ cwd = files[1] }),
+                }),
+                previewer = conf.file_previewer(opts),
+                sorter = conf.file_sorter(opts),
+            })
+            :find()
     end
-
-    opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
-
-    pickers
-        .new(opts, {
-            prompt_title = opts.prompt_title or "Find Norg Files",
-            cwd = files[1],
-            finder = finders.new_table({
-                results = files[2],
-                entry_maker = make_entry.gen_from_file({ cwd = files[1] }),
-            }),
-            previewer = conf.file_previewer(opts),
-            sorter = conf.file_sorter(opts),
-        })
-        :find()
 end

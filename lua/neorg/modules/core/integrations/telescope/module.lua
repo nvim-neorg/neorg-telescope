@@ -6,6 +6,23 @@ local neorg = require("neorg.core")
 
 local module = neorg.modules.create("core.integrations.telescope")
 
+module.config.public = {
+    find_linkable = {},
+    find_norg_files = {},
+    insert_link = {},
+    insert_file_link = {
+        show_title_preview = true,
+    },
+    search_headings = {},
+    find_project_tasks = {},
+    find_context_tasks = {},
+    find_aof_tasks = {},
+    find_aof_project_tasks = {},
+    switch_workspace = {},
+    find_backlinks = {},
+    find_header_backlinks = {},
+}
+
 module.setup = function()
     return { success = true, requires = { "core.keybinds", "core.dirman" } }
 end
@@ -34,18 +51,58 @@ module.load = function()
 end
 
 module.public = {
-    find_linkable = require("telescope._extensions.neorg.find_linkable"),
-    find_norg_files = require("telescope._extensions.neorg.find_norg_files"),
-    insert_link = require("telescope._extensions.neorg.insert_link"),
-    insert_file_link = require("telescope._extensions.neorg.insert_file_link"),
-    search_headings = require("telescope._extensions.neorg.search_headings"),
-    find_project_tasks = require("telescope._extensions.neorg.find_project_tasks"),
-    find_context_tasks = require("telescope._extensions.neorg.find_context_tasks"),
-    find_aof_tasks = require("telescope._extensions.neorg.find_aof_tasks"),
-    find_aof_project_tasks = require("telescope._extensions.neorg.find_aof_project_tasks"),
-    switch_workspace = require("telescope._extensions.neorg.switch_workspace"),
-    find_backlinks = require("telescope._extensions.neorg.backlinks.file_backlinks"),
-    find_header_backlinks = require("telescope._extensions.neorg.backlinks.header_backlinks"),
+    find_linkable = function(opts)
+        local func = require("telescope._extensions.neorg.find_linkable")(module.config.public.find_linkable)
+        return func(opts)
+    end,
+    find_norg_files = function(opts)
+        local func = require("telescope._extensions.neorg.find_norg_files")(module.config.public.find_norg_files)
+        return func(opts)
+    end,
+    insert_link = function(opts)
+        local func = require("telescope._extensions.neorg.insert_link")(module.config.public.insert_link)
+        return func(opts)
+    end,
+    insert_file_link = function(opts)
+        local func = require("telescope._extensions.neorg.insert_file_link")(module.config.public.insert_file_link)
+        return func(opts)
+    end,
+    search_headings = function(opts)
+        local func = require("telescope._extensions.neorg.search_headings")(module.config.public.search_headings)
+        return func(opts)
+    end,
+    find_project_tasks = function(opts)
+        local func = require("telescope._extensions.neorg.find_project_tasks")(module.config.public.find_project_tasks)
+        return func(opts)
+    end,
+    find_context_tasks = function(opts)
+        local func = require("telescope._extensions.neorg.find_context_tasks")(module.config.public.find_context_tasks)
+        return func(opts)
+    end,
+    find_aof_tasks = function(opts)
+        local func = require("telescope._extensions.neorg.find_aof_tasks")(module.config.public.find_aof_tasks)
+        return func(opts)
+    end,
+    find_aof_project_tasks = function(opts)
+        local func =
+            require("telescope._extensions.neorg.find_aof_project_tasks")(module.config.public.find_aof_project_tasks)
+        return func(opts)
+    end,
+    switch_workspace = function(opts)
+        local func = require("telescope._extensions.neorg.switch_workspace")(module.config.public.switch_workspace)
+        return func(opts)
+    end,
+    find_backlinks = function()
+        local func =
+            require("telescope._extensions.neorg.backlinks.file_backlinks")(module.config.public.find_backlinks)
+        return func()
+    end,
+    find_header_backlinks = function()
+        local func = require("telescope._extensions.neorg.backlinks.header_backlinks")(
+            module.config.public.find_header_backlinks
+        )
+        return func()
+    end,
 }
 
 module.on_event = function(event)

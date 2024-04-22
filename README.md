@@ -170,6 +170,23 @@ You can install it through your favorite plugin manager:
 
   </details>
 
+## Configuration
+
+This module accepts the following configuration with the shown defaults:
+
+```lua
+{
+    ...
+    ["core.integrations.telescope"] = {
+        insert_file_link = {
+            -- Whether to show the title preview in telescope. Affects performance with a large
+            -- number of files.
+            show_title_preview = true,
+        },
+    }
+}
+```
+
 # Usage
 You can define keybindings like this:
 
