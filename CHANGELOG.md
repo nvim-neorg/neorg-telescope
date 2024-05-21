@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/nvim-neorg/neorg-telescope/compare/v1.1.0...v1.2.0) (2024-05-21)
+
+
+### Features
+
+* add configuration for insert_file_link title ([dd07fc9](https://github.com/nvim-neorg/neorg-telescope/commit/dd07fc9bf3e7862d9700562bc8c0a3761e8a35b4))
+
 ## [1.1.0](https://github.com/nvim-neorg/neorg-telescope/compare/v1.0.0...v1.1.0) (2024-04-19)
 
 
