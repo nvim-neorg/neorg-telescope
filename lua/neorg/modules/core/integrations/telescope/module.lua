@@ -33,6 +33,12 @@ module.load = function()
     })
 end
 
+module.config.public = {
+    insert_file_link = {
+        show_title_preview = true,
+    },
+}
+
 module.public = {
     find_linkable = require("telescope._extensions.neorg.find_linkable"),
     find_norg_files = require("telescope._extensions.neorg.find_norg_files"),
