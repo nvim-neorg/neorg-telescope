@@ -10,8 +10,7 @@ M.build_backlink_regex = function(workspace_path, current_file, heading)
     local Path = require("pathlib")
 
     current_file = Path(vim.api.nvim_buf_get_name(0))
-    current_file:remove_suffix(".norg")
-    current_file = current_file:relative_to(Path(workspace_path))
+    current_file = current_file:relative_to(Path(workspace_path)):remove_suffix(".norg")
 
     if not heading then
         -- TODO: file sep may be `\` on Windows (currently in discussion)
@@ -26,6 +25,8 @@ M.build_backlink_regex = function(workspace_path, current_file, heading)
     end
     local heading_text = heading:gsub("^%** ", "")
     heading_text = heading_text:gsub("^%(.%)%s?", "")
+    heading_text = heading_text:gsub("%(", "\\(")
+    heading_text = heading_text:gsub("%)", "\\)")
     -- TODO: file sep may be `\` on Windows (currently in discussion)
     -- use `current_file:regex_string("[/\\]", Path.const.regex_charset.rust)` instead
     return ([[\{:\$/%s:(#|%s) %s\}]]):format(current_file, heading_prefix, heading_text) -- {:$/workspace_path:(# heading or ** heading)}
