@@ -10,8 +10,7 @@ M.build_backlink_regex = function(workspace_path, current_file, heading)
     local Path = require("pathlib")
 
     current_file = Path(vim.api.nvim_buf_get_name(0))
-    current_file:remove_suffix(".norg")
-    current_file = current_file:relative_to(Path(workspace_path))
+    current_file = current_file:relative_to(Path(workspace_path)):remove_suffix(".norg")
 
     if not heading then
         -- TODO: file sep may be `\` on Windows (currently in discussion)
