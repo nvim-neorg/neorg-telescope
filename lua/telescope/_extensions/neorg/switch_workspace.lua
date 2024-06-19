@@ -35,6 +35,8 @@ return function(options)
             },
         })
 
+    local files = {}
+
     pickers
         .new(opts, {
             prompt_title = "Switch Workspace",
@@ -58,8 +60,11 @@ return function(options)
                     table.insert(lines, "Path:")
                     table.insert(lines, tostring(workspace.path))
                     table.insert(lines, "Files:")
-                    local files = neorg.modules.get_module("core.dirman").get_norg_files(workspace.name)
-                    for _, file in ipairs(files) do
+
+                    if not files[workspace.name] then
+                        files[workspace.name] = neorg.modules.get_module("core.dirman").get_norg_files(workspace.name)
+                    end
+                    for _, file in ipairs(files[workspace.name]) do
                         table.insert(lines, tostring(file))
                     end
                     vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, true, lines)
