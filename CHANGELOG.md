@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.0...v1.2.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* backlink file paths ([7bbd96f](https://github.com/nvim-neorg/neorg-telescope/commit/7bbd96fba2b67e33de2b97b1a7b5d2ec4fdd2909))
+* escape parens in heading backling search ([cacc934](https://github.com/nvim-neorg/neorg-telescope/commit/cacc934dfd5169e777bd364cf00745e2c9bbf31d))
+
 ## [1.2.0](https://github.com/nvim-neorg/neorg-telescope/compare/v1.1.0...v1.2.0) (2024-05-21)
 
 
