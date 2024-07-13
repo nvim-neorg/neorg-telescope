@@ -39,8 +39,7 @@ local function get_file_title(file)
         return nil
     end
 
-    local bufnr = dirman.get_file_bufnr(tostring(file))
-    local metadata = ts.get_document_metadata(bufnr)
+    local metadata = ts.get_document_metadata(file)
     if not metadata or not metadata.title then
         return nil
     end
