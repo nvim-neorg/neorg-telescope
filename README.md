@@ -192,24 +192,18 @@ This module accepts the following configuration with the shown defaults:
 You can define keybindings like this:
 
 ```lua
-local neorg_callbacks = require("neorg.core.callbacks")
-
-neorg_callbacks.on_event("core.keybinds.events.enable_keybinds", function(_, keybinds)
-    -- Map all the below keybinds only when the "norg" mode is active
-    keybinds.map_event_to_mode("norg", {
-        n = { -- Bind keys in normal mode
-            { "<C-s>", "core.integrations.telescope.find_linkable" },
-        },
-
-        i = { -- Bind in insert mode
-            { "<C-l>", "core.integrations.telescope.insert_link" },
-        },
-    }, {
-        silent = true,
-        noremap = true,
-    })
-end)
+vim.keymap.set("n", "<lhs>", "<Plug>(neorg.telescope.search_headings)")
 ```
+
+List of all available plug mappings:
+- `neorg.telescope.backlinks.file_backlinks`
+- `neorg.telescope.backlinks.header_backlinks`
+- `neorg.telescope.find_linkable`
+- `neorg.telescope.find_norg_files`
+- `neorg.telescope.insert_file_link`
+- `neorg.telescope.insert_link`
+- `neorg.telescope.search_headings`
+- `neorg.telescope.switch_workspace`
 
 # Support Welcome
 If it's not clear by the code already, I'm a solid noob at telescope related things :)
