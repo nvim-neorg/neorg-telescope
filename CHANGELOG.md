@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.1...v1.2.2) (2024-07-14)
+
+
+### Bug Fixes
+
+* all the keybinds ([7a867af](https://github.com/nvim-neorg/neorg-telescope/commit/7a867af35889d24b6c74ce4dcecaf49af5457c46))
+
 ## [1.2.1](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.0...v1.2.1) (2024-06-19)
 
 
