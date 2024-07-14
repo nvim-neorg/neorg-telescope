@@ -192,7 +192,7 @@ This module accepts the following configuration with the shown defaults:
 You can define keybindings like this:
 
 ```lua
-vim.keymap.set("n", "<rhs>", "<Plug>(neorg.telescope.search_headings)")
+vim.keymap.set("n", "<lhs>", "<Plug>(neorg.telescope.search_headings)")
 ```
 
 List of all available plug mappings:
