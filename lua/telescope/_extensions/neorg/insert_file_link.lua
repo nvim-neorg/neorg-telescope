@@ -74,15 +74,18 @@ local function generate_links(preview)
             if preview then
                 title = get_file_title(file)
                 if title then
-                    title_display = " [" .. title .. "]"
+                    title_display = "| " .. title
                 end
             end
 
             file = Path(file)
             local relative = file:relative_to(Path(files[1]))
+            local relative_string = relative:remove_suffix(".norg"):tostring()
+
+            local padding = 100 - #relative_string
             local links = {
                 file = file,
-                display = "$/" .. relative .. title_display,
+                display = "󰈙 " .. relative_string .. string.rep(" ", padding) .. title_display,
                 relative = relative:remove_suffix(".norg"),
                 title = title,
             }
@@ -106,6 +109,7 @@ return function(opts)
                 entry_maker = function(entry)
                     return {
                         value = entry,
+                        path = entry.file:tostring(),
                         display = entry.display,
                         ordinal = entry.display,
                         relative = entry.relative,
@@ -115,7 +119,7 @@ return function(opts)
                 end,
             }),
             -- I couldn't get syntax highlight to work with this :(
-            previewer = nil,
+            previewer = conf.file_previewer(opts),
             sorter = conf.generic_sorter(opts),
             attach_mappings = function(prompt_bufnr)
                 actions_set.select:replace(function()

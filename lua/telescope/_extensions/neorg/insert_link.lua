@@ -34,11 +34,12 @@ end
 local function get_linkables(bufnr, file, workspace)
     local ret = {}
 
+    local path
     local lines
     if file then
         lines = vim.fn.readfile(file:tostring("/"))
-        file = file:remove_suffix(".norg")
-        file = "$/" .. file:relative_to(workspace)
+        path = file
+        file = " " .. file:relative_to(workspace):remove_suffix(".norg")
     else
         lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
     end
@@ -46,12 +47,15 @@ local function get_linkables(bufnr, file, workspace)
     for i, line in ipairs(lines) do
         local heading = { line:match("^%s*(%*+%s+(.+))$") }
         if not vim.tbl_isempty(heading) then
-            table.insert(ret, { line = i, linkable = heading[2], display = heading[1], file = file })
+            table.insert(ret, { line = i, linkable = heading[2], display = heading[1], file = file, path = path })
         end
 
         local marker_or_drawer = { line:match("^%s*(%|%|?%s+(.+))$") }
         if not vim.tbl_isempty(marker_or_drawer) then
-            table.insert(ret, { line = i, linkable = marker_or_drawer[2], display = marker_or_drawer[1], file = file })
+            table.insert(
+                ret,
+                { line = i, linkable = marker_or_drawer[2], display = marker_or_drawer[1], file = file, path = path }
+            )
         end
     end
 
@@ -111,16 +115,16 @@ return function(opts)
                 results = links,
                 entry_maker = function(entry)
                     local displayer = entry_display.create({
-                        separator = ": ",
+                        separator = " | ",
                         items = {
-                            { width = 30 },
+                            { width = 100 },
                             { remaining = true },
                         },
                     })
                     local function make_display(ent)
                         if entry.file then
                             return displayer({
-                                { ent.file:sub(-30, -1), "NeorgLinkFile" },
+                                { ent.file,    "NeorgLinkFile" },
                                 { ent.ordinal, "NeorgLinkText" },
                             })
                         else
@@ -129,6 +133,7 @@ return function(opts)
                             })
                         end
                     end
+
                     -- if not entry.file then
                     -- entry.file = vim.fn.expand("%:r")
                     -- end
@@ -139,11 +144,12 @@ return function(opts)
                         lnum = entry.line,
                         file = entry.file and tostring(entry.file) or nil,
                         linkable = entry.linkable,
+                        path = entry.path:tostring(),
                     }
                 end,
             }),
             -- I couldn't get syntax highlight to work with this :(
-            previewer = nil,
+            previewer = conf.file_previewer(opts),
             sorter = conf.generic_sorter(opts),
             attach_mappings = function(prompt_bufnr)
                 actions_set.select:replace(function()
@@ -153,7 +159,7 @@ return function(opts)
                     local inserted_file = (function()
                         if entry.file then
                             -- entry.display = string.gsub(entry.display, entry.file..": ", "")
-                            return ":" .. entry.file .. ":"
+                            return ":" .. string.gsub(entry.file, " ", "$/") .. ":"
                         else
                             return ""
                         end
