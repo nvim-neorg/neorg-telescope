@@ -39,7 +39,7 @@ local function get_linkables(bufnr, file, workspace)
     if file then
         lines = vim.fn.readfile(file:tostring("/"))
         path = file
-        file = " " .. file:relative_to(workspace):remove_suffix(".norg")
+        file = "$/" .. file:relative_to(workspace):remove_suffix(".norg")
     else
         lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, true)
     end
@@ -115,16 +115,16 @@ return function(opts)
                 results = links,
                 entry_maker = function(entry)
                     local displayer = entry_display.create({
-                        separator = " | ",
+                        separator = "",
                         items = {
-                            { width = 100 },
+                            { width = 55 },
                             { remaining = true },
                         },
                     })
                     local function make_display(ent)
                         if entry.file then
                             return displayer({
-                                { ent.file,    "NeorgLinkFile" },
+                                { ent.file, "NeorgLinkFile" },
                                 { ent.ordinal, "NeorgLinkText" },
                             })
                         else
@@ -148,7 +148,6 @@ return function(opts)
                     }
                 end,
             }),
-            -- I couldn't get syntax highlight to work with this :(
             previewer = conf.file_previewer(opts),
             sorter = conf.generic_sorter(opts),
             attach_mappings = function(prompt_bufnr)
@@ -159,7 +158,7 @@ return function(opts)
                     local inserted_file = (function()
                         if entry.file then
                             -- entry.display = string.gsub(entry.display, entry.file..": ", "")
-                            return ":" .. string.gsub(entry.file, " ", "$/") .. ":"
+                            return ":" .. entry.file .. ":"
                         else
                             return ""
                         end
