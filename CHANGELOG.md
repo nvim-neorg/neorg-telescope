@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.2...v1.2.3) (2024-07-30)
+
+
+### Bug Fixes
+
+* nil check entry.path ([2b883ab](https://github.com/nvim-neorg/neorg-telescope/commit/2b883abc3b79b83a033772d82185fdffa3ecf2a8))
+
 ## [1.2.2](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.1...v1.2.2) (2024-07-14)
 
 
