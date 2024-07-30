@@ -144,7 +144,7 @@ return function(opts)
                         lnum = entry.line,
                         file = entry.file and tostring(entry.file) or nil,
                         linkable = entry.linkable,
-                        path = (entry.path and tostring(entry.path)) or vim.api.nvim_buf_get_name(0),
+                        path = entry.path and tostring(entry.path) or vim.api.nvim_buf_get_name(0),
                     }
                 end,
             }),
