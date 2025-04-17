@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.3...v1.2.4) (2025-04-17)
+
+
+### Bug Fixes
+
+* **insert-files:** ensure buffer is loaded before passing to treesitter parser ([#74](https://github.com/nvim-neorg/neorg-telescope/issues/74)) ([7fb6ca6](https://github.com/nvim-neorg/neorg-telescope/commit/7fb6ca6a632c3c095601d379a664c0c1f802dc6c))
+
 ## [1.2.3](https://github.com/nvim-neorg/neorg-telescope/compare/v1.2.2...v1.2.3) (2024-07-30)
 
 
